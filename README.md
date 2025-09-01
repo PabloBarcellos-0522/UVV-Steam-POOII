@@ -1,7 +1,7 @@
 # UVV-Steam-POOII
 
 ##  jogo de corrida
-### Alterações nos projeto
+
 
 #### Bugs
 
@@ -11,7 +11,7 @@
 
 
 ##  jogo do Ping Pong
-### Alterações nos projeto
+
 
 #### Bugs
 
@@ -21,7 +21,7 @@
 
 
 ##  Jogo dos Aviões
-### Alterações nos projeto
+
 
 #### Bugs
 
