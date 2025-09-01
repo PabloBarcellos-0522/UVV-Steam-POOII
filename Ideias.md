@@ -1,8 +1,8 @@
 # UVV-Steam-POOII
 
 
-##  Space battle shooter WPF MOO ICT - 16
-
+Space battle shooter WPF MOO ICT - 16
+===
 
 #### Bugs
 
@@ -13,13 +13,15 @@
 * Naves atingidas emitem uma explosão ao serem destruidas
 * Sistema de combo: número que conta quantas naves são abatidas em sequencia (pode aparcer na explosão da nave a partir da 2º nave em sequencia)
 
-### Menu
+#### Menu
 1. Foto tela fundo espacial estrelado com:
-  * A nave padrão no centro da tela com uma setinha para cada lado para selecionar a sua frota
-  * Botão de iniciar
+   * A nave padrão no centro da tela com uma setinha para cada lado para selecionar a sua frota
+   * Botão de iniciar
 
+<br><br>
 
-##  Car Racing Game WPF MOO ICT - 17
+Car Racing Game WPF MOO ICT - 17
+===
 
 #### Bugs
 
@@ -38,8 +40,10 @@
    * Carro que anda mais lento
    * Moto? :)
 
+<br><br>
 
-##  Sinple Pong game - 22
+Sinple Pong game - 22
+===
 
 #### Bugs
 * Bola tem nascimento estranho quando alguém pontua
