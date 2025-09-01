@@ -6,9 +6,16 @@
 #### Bugs
 
 #### Novas mecanicas
+**Poderes**: Ficam por determinado tempo após coletar o item
+
 
 #### Menu
-
+1. Foto tela inicial com:
+   * Botão de jogar
+   * Foto do jogo
+2. Escolha do carro
+   * Carro que  vira mais rapido
+   * Carro que anda mais lento
 
 ##  jogo do Ping Pong
 
