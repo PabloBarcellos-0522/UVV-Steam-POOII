@@ -15,8 +15,8 @@
 
 ### Menu
 1. Foto tela fundo espacial estrelado com:
-* A nave padrão no centro da tela com uma setinha para cada lado para selecionar a sua frota
-* Botão de iniciar
+  * A nave padrão no centro da tela com uma setinha para cada lado para selecionar a sua frota
+  * Botão de iniciar
 
 
 ##  Car Racing Game WPF MOO ICT - 17
