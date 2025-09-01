@@ -25,6 +25,12 @@
 * 
 
 #### Menu
+1. Foto tela inicial com:
+   * Botão de jogar
+   * Foto do jogo
+2. Modo de jogo
+   * Contra bot
+   * Contra segundo jogador 
 
 
 ##  Jogo dos Aviões
