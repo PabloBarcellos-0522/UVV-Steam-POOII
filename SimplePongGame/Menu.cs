@@ -21,7 +21,8 @@ namespace SimplePongGame
         {
             this.Hide();
             Form1 gameForm = new();
-            gameForm.Show();
+            gameForm.ShowDialog();
+            this.Show();
         }
     }
 }

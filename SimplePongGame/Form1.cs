@@ -110,7 +110,11 @@ namespace SimplePongGame
                 ballx = -ballx;
                 ballx = 5;
                 score++;
-                cpu.Top = (ClientSize.Height / 2) - 40;
+
+                if (score > 5)
+                {
+                    cpu.Top = (ClientSize.Height / 2) - 40;
+                }
             }
 
 
@@ -133,15 +137,17 @@ namespace SimplePongGame
             {
                 player.Top += 8;
             }
-            if (score > 10)
+            if (score >= 10)
             {
                 gameTimer.Stop();
-                MessageBox.Show("You win this game");
+                MessageBox.Show("You win this game :)");
+                this.Close();
             }
-            if (cpuPoint > 10)
+            if (cpuPoint >= 10)
             {
                 gameTimer.Stop();
                 MessageBox.Show("CPU wins, you lose");
+                this.Close();
             }
         }
 
