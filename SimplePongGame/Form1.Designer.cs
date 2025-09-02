@@ -63,6 +63,9 @@
             ball.Size = new Size(27, 26);
             ball.TabIndex = 1;
             ball.TabStop = false;
+            System.Drawing.Drawing2D.GraphicsPath path = new System.Drawing.Drawing2D.GraphicsPath();
+            path.AddEllipse(0, 0, ball.Width, ball.Height);
+            ball.Region = new System.Drawing.Region(path);
             // 
             // cpu
             // 
