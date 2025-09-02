@@ -21,7 +21,7 @@ namespace SimplePongGame
         bool goup; 
         bool godown; 
         int speed = 5; 
-        int ballx = 5; 
+        double ballx = 5; 
         int bally = 5; 
         int score = 0; 
         int cpuPoint = 0; 
@@ -60,8 +60,18 @@ namespace SimplePongGame
             playerScore.Text = "" + score; 
             cpuLabel.Text = "" + cpuPoint;
             ball.Top -= bally;
-            ball.Left -= ballx; 
-            cpu.Top += speed; 
+            ball.Left -= (int)ballx; 
+            cpu.Top += speed;
+
+            if (ballx > 0)
+            {
+                ballx += 0.05;
+            }
+            else
+            {
+                ballx -= 0.05;
+            }
+
 
             if (score < 5)
             {
@@ -78,8 +88,9 @@ namespace SimplePongGame
             {
 
                 ball.Left = 434; 
-                ballx = -ballx; 
-                ballx -= 2; 
+                ballx = -ballx;
+                ballx = 5;
+                //ballx -= 2; 
                 cpuPoint++; 
             }
    
@@ -87,8 +98,9 @@ namespace SimplePongGame
             {
                 // then
                 ball.Left = 434;  
-                ballx = -ballx; 
-                ballx += 2; 
+                ballx = -ballx;
+                ballx = 5;
+                //ballx += 2; 
                 score++; 
             }
 
