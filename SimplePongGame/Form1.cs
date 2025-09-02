@@ -21,8 +21,8 @@ namespace SimplePongGame
         bool goup; 
         bool godown; 
         int speed = 5; 
-        double ballx = 5; 
-        int bally = 5; 
+        double ballx = 5;
+        int bally = 6; 
         int score = 0; 
         int cpuPoint = 0; 
 
@@ -73,6 +73,7 @@ namespace SimplePongGame
             }
 
 
+
             if (score < 5)
             {
                 if (cpu.Top < 0 || cpu.Top > 455)
@@ -82,26 +83,34 @@ namespace SimplePongGame
             }
             else
             {
-                cpu.Top = ball.Top + 30;
+                if (ball.Top - 40 > cpu.Top && speed < 0)
+                {
+                    speed = -speed;
+                } else if (ball.Top - 40 < cpu.Top && speed > 0)
+                {
+                    speed = -speed;
+                }
             }
-            if (ball.Left < 0)
+            if (ball.Left < -15)
             {
 
-                ball.Left = 434; 
+                ball.Left = 434;
+                ball.Top = ClientSize.Height / 2;
                 ballx = -ballx;
                 ballx = 5;
-                //ballx -= 2; 
-                cpuPoint++; 
+                cpuPoint++;
+                cpu.Top = (ClientSize.Height / 2) - 40;
             }
    
-            if (ball.Left + ball.Width > ClientSize.Width)
+            if (ball.Left + ball.Width > ClientSize.Width + 15)
             {
                 // then
-                ball.Left = 434;  
+                ball.Left = 434;
+                ball.Top = ClientSize.Height / 2;
                 ballx = -ballx;
                 ballx = 5;
-                //ballx += 2; 
-                score++; 
+                score++;
+                cpu.Top = (ClientSize.Height / 2) - 40;
             }
 
 
