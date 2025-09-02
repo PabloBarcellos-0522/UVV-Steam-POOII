@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             Jogar = new Button();
-            button1 = new Button();
+            players_button = new Button();
             SuspendLayout();
             // 
             // Jogar
@@ -43,15 +43,16 @@
             Jogar.UseVisualStyleBackColor = true;
             Jogar.Click += Jogar_Click;
             // 
-            // button1
+            // players_button
             // 
-            button1.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button1.Location = new Point(350, 283);
-            button1.Name = "button1";
-            button1.Size = new Size(243, 61);
-            button1.TabIndex = 1;
-            button1.Text = "Player1 vs CPU";
-            button1.UseVisualStyleBackColor = true;
+            players_button.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            players_button.Location = new Point(350, 283);
+            players_button.Name = "players_button";
+            players_button.Size = new Size(243, 61);
+            players_button.TabIndex = 1;
+            players_button.Text = "1 Player";
+            players_button.UseVisualStyleBackColor = true;
+            players_button.Click += button1_Click;
             // 
             // Menu
             // 
@@ -59,7 +60,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = Properties.Resources.Ping_Pong_Game_;
             ClientSize = new Size(928, 574);
-            Controls.Add(button1);
+            Controls.Add(players_button);
             Controls.Add(Jogar);
             Name = "Menu";
             Text = "Menu";
@@ -69,6 +70,6 @@
         #endregion
 
         private Button Jogar;
-        private Button button1;
+        private Button players_button;
     }
 }

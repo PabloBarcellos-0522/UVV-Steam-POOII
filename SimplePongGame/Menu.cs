@@ -12,6 +12,8 @@ namespace SimplePongGame
 {
     public partial class Menu : Form
     {
+        bool players = false;
+
         public Menu()
         {
             InitializeComponent();
@@ -20,9 +22,22 @@ namespace SimplePongGame
         private void Jogar_Click(object sender, EventArgs e)
         {
             this.Hide();
-            Form1 gameForm = new();
+            Form1 gameForm = new(players);
             gameForm.ShowDialog();
             this.Show();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            players = !players;
+            if (players)
+            {
+                players_button.Text = "2 Players";
+
+            } else
+            {
+                players_button.Text = "1 Player";
+            }
         }
     }
 }
