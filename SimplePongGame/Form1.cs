@@ -175,14 +175,26 @@ namespace SimplePongGame
             if (ball.Bounds.IntersectsWith(player.Bounds))
             {
                 ballx = -ballx;
-                ball.BackColor = Color.White;
+                if (bally > 0)
+                {
+                    bally = rand.Next(3, 8);
+                } else {
+                    bally = rand.Next(-8, -3);
+                }
+                    ball.BackColor = Color.White;
             }
             else if (ball.Bounds.IntersectsWith(cpu.Bounds))
             {
                 ballx = -ballx;
+                if (bally > 0)
+                {
+                    bally = rand.Next(3, 9);
+                } else {
+                    bally = rand.Next(-9, -3);
+                }
                 ball.BackColor = Color.Black;
             }
-
+            cpuLabel.Text = bally.ToString();
             if (goup == true && player.Top > 0)
             {
                 player.Top -= 8;
