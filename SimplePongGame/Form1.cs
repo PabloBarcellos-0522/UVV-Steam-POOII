@@ -128,6 +128,7 @@ namespace SimplePongGame
                 ball.Left = 434;
                 ball.Top = ClientSize.Height / 2;
                 ballx = -ballx;
+                ball.BackColor = Color.Gray;
                 if (ballx > 0)
                 {
                     ballx = 5;
@@ -150,6 +151,7 @@ namespace SimplePongGame
                 ball.Left = 434;
                 ball.Top = ClientSize.Height / 2;
                 ballx = -ballx;
+                ball.BackColor = Color.Gray;
                 if (ballx > 0)
                 {
                     ballx = 5;
@@ -170,9 +172,15 @@ namespace SimplePongGame
                 bally = -bally;
             }
 
-            if (ball.Bounds.IntersectsWith(player.Bounds) || ball.Bounds.IntersectsWith(cpu.Bounds))
+            if (ball.Bounds.IntersectsWith(player.Bounds))
             {
                 ballx = -ballx;
+                ball.BackColor = Color.White;
+            }
+            else if (ball.Bounds.IntersectsWith(cpu.Bounds))
+            {
+                ballx = -ballx;
+                ball.BackColor = Color.Black;
             }
 
             if (goup == true && player.Top > 0)

@@ -57,7 +57,7 @@
             // 
             // ball
             // 
-            ball.BackColor = SystemColors.ButtonHighlight;
+            ball.BackColor = SystemColors.ControlDarkDark;
             ball.Location = new Point(434, 239);
             ball.Name = "ball";
             ball.Size = new Size(27, 26);
@@ -69,7 +69,7 @@
             // 
             // cpu
             // 
-            cpu.BackColor = SystemColors.GrayText;
+            cpu.BackColor = SystemColors.Desktop;
             cpu.Location = new Point(897, 230);
             cpu.Name = "cpu";
             cpu.Size = new Size(27, 127);
@@ -79,22 +79,22 @@
             // playerScore
             // 
             playerScore.AutoSize = true;
-            playerScore.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            playerScore.Font = new Font("Arial Narrow", 27.75F, FontStyle.Underline, GraphicsUnit.Point, 0);
             playerScore.ForeColor = Color.Lime;
-            playerScore.Location = new Point(105, 9);
+            playerScore.Location = new Point(408, 9);
             playerScore.Name = "playerScore";
-            playerScore.Size = new Size(21, 15);
+            playerScore.Size = new Size(53, 43);
             playerScore.TabIndex = 3;
             playerScore.Text = "00";
             // 
             // cpuLabel
             // 
             cpuLabel.AutoSize = true;
-            cpuLabel.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            cpuLabel.Font = new Font("Arial Narrow", 27.75F, FontStyle.Bold | FontStyle.Underline, GraphicsUnit.Point, 0);
             cpuLabel.ForeColor = Color.Red;
-            cpuLabel.Location = new Point(735, 9);
+            cpuLabel.Location = new Point(469, 9);
             cpuLabel.Name = "cpuLabel";
-            cpuLabel.Size = new Size(21, 15);
+            cpuLabel.Size = new Size(53, 43);
             cpuLabel.TabIndex = 4;
             cpuLabel.Text = "00";
             // 
