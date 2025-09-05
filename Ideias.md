@@ -7,11 +7,12 @@ Space battle shooter WPF MOO ICT - 16
 #### Bugs
 
 #### Novidades
-* trocar a sua espaçonave/frota para qualquer uma do jogo
+* trocar a sua espaçonave/frota para qualquer uma do jogo. Alterando a arma da nave e os disparos
 * naves da sua própria frota podem aparecer agora
 * Atirar em naves da sua propria frota te faz perder pontos
 * Naves atingidas emitem uma explosão ao serem destruidas
 * Sistema de combo: número que conta quantas naves são abatidas em sequencia (pode aparcer na explosão da nave a partir da 2º nave em sequencia)
+* 
 
 #### Menu
 1. Foto tela fundo espacial estrelado com:
@@ -27,8 +28,9 @@ Car Racing Game WPF MOO ICT - 17
 
 #### Novidades
 * Poderes: Ficam por 5 segundos após coletar o item
-* turbo: aumenta a velocidade
-* escudo: fica imune a qualquer dano contra outro carro
+*   turbo: aumenta a velocidade
+*   escudo: fica imune a qualquer dano contra outro carro
+*   Diminui a velocidade do carro
 
 
 #### Menu
