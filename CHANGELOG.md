@@ -32,6 +32,13 @@ diferentes atributos (velocidade, aceleração, manobra).
 
 ## 🏓 Jogo de Ping Pong
 
+<h4 align="center">Antes e depois</h4>
+
+<div align="center" style="display: flex; justify-content: space-around">
+ <img style="width: 500px" src="./Main Resources/Pong_Before.png" />
+ <img style="width: 500px" src="./Main Resources/Pong_After.png" />
+</div>
+
 ### Bugs
 - **`⚠️ CORRIGIDO`** **Bola Quadrada:**
  - **Descrição:** A "bola" do ping pong estava quadrada, o que causava estranheza para os players
