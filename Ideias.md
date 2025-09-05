@@ -40,7 +40,7 @@ Car Racing Game WPF MOO ICT - 17
 2. Escolha do carro
    * Carro que  vira mais rapido
    * Carro que anda mais lento
-   * Moto? :)
+   * Moto acelera mais rapido e freia mais rapido
 
 <br><br>
 
