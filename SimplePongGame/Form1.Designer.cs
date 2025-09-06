@@ -111,6 +111,7 @@
             Controls.Add(player);
             Name = "Form1";
             Text = "Pong Game";
+            FormClosed += Form1_FormClosed;
             KeyDown += KeyIsDown;
             KeyUp += KeyIsUp;
             ((System.ComponentModel.ISupportInitialize)player).EndInit();

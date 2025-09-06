@@ -18,14 +18,14 @@ namespace SimplePongGame
         int[] i = { 5, 6, 8, 9 };
         int[] j = { 10, 9, 8, 11, 12 };
 
-        bool goup; 
+        bool goup;
         bool godown;
         bool P2up;
         bool P2down;
-        int speed = 5; 
+        int speed = 5;
         double ballx = 5;
-        int bally = 6; 
-        int score = 0; 
+        int bally = 6;
+        int score = 0;
         int cpuPoint = 0;
         bool players;
 
@@ -85,7 +85,7 @@ namespace SimplePongGame
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            playerScore.Text = "" + score; 
+            playerScore.Text = "" + score;
             cpuLabel.Text = "" + cpuPoint;
             ball.Top -= bally;
             ball.Left -= (int)ballx;
@@ -117,7 +117,8 @@ namespace SimplePongGame
                 if (ball.Top - 40 > cpu.Top && speed < 0)
                 {
                     speed = -speed;
-                } else if (ball.Top - 40 < cpu.Top && speed > 0)
+                }
+                else if (ball.Top - 40 < cpu.Top && speed > 0)
                 {
                     speed = -speed;
                 }
@@ -144,7 +145,7 @@ namespace SimplePongGame
                     cpu.Top = (ClientSize.Height / 2) - 40;
                 }
             }
-   
+
             if (ball.Left + ball.Width > ClientSize.Width + 15)
             {
                 // then
@@ -155,7 +156,9 @@ namespace SimplePongGame
                 if (ballx > 0)
                 {
                     ballx = 5;
-                } else {
+                }
+                else
+                {
                     ballx = -5;
                 }
 
@@ -178,10 +181,12 @@ namespace SimplePongGame
                 if (bally > 0)
                 {
                     bally = rand.Next(3, 8);
-                } else {
+                }
+                else
+                {
                     bally = rand.Next(-8, -3);
                 }
-                    ball.BackColor = Color.White;
+                ball.BackColor = Color.White;
             }
             else if (ball.Bounds.IntersectsWith(cpu.Bounds))
             {
@@ -189,12 +194,13 @@ namespace SimplePongGame
                 if (bally > 0)
                 {
                     bally = rand.Next(3, 9);
-                } else {
+                }
+                else
+                {
                     bally = rand.Next(-9, -3);
                 }
                 ball.BackColor = Color.Black;
             }
-            cpuLabel.Text = bally.ToString();
             if (goup == true && player.Top > 0)
             {
                 player.Top -= 8;
@@ -217,7 +223,7 @@ namespace SimplePongGame
                     cpu.Top += 8;
                 }
             }
-            
+
 
 
             if (score >= 10)
@@ -226,7 +232,9 @@ namespace SimplePongGame
                 if (players)
                 {
                     MessageBox.Show("Player 1 win this game!");
-                } else {
+                }
+                else
+                {
                     MessageBox.Show("You win this game :)");
                 }
                 this.Close();
@@ -237,12 +245,18 @@ namespace SimplePongGame
                 if (players)
                 {
                     MessageBox.Show("Player 2 win this game!");
-                } else {
+                }
+                else
+                {
                     MessageBox.Show("CPU wins, you lose :(");
                 }
                 this.Close();
             }
         }
 
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            gameTimer.Stop();
         }
     }
+}
