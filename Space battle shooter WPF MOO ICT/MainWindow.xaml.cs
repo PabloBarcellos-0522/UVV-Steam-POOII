@@ -26,10 +26,10 @@ namespace Space_battle_shooter_WPF_MOO_ICT
         int enemySpriteCounter = 0;
         int enemyCounter = 100;
         int playerSpeed = 10;
-        int limit = 50;
+        double limit = 50;
         int score = 0;
         int damage = 0;
-        int enemySpeed = 10;
+        double enemySpeed = 5;
 
         Rect playerHitBox;
 
@@ -64,13 +64,20 @@ namespace Space_battle_shooter_WPF_MOO_ICT
 
             enemyCounter -= 1;
 
+            if (limit > 20)
+            {
+                limit -= 0.05;
+            }
+
+            enemySpeed += 0.005;
+
             scoreText.Content = "Score: " + score;
             damageText.Content = "Damage " + damage;
 
             if (enemyCounter < 0)
             {
                 MakeEnemies();
-                enemyCounter = limit;
+                enemyCounter = (int)limit;
             }
 
             if (moveLeft == true && Canvas.GetLeft(player) > 0)
@@ -140,12 +147,6 @@ namespace Space_battle_shooter_WPF_MOO_ICT
             }
 
 
-            if (score > 5)
-            {
-                limit = 20;
-                enemySpeed = 15;
-            }
-
             if (damage > 99)
             {
                 gameTimer.Stop();
@@ -163,25 +164,13 @@ namespace Space_battle_shooter_WPF_MOO_ICT
 
         private void OnKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Left)
+            if (e.Key == Key.Left || e.Key == Key.A)
             {
                 moveLeft = true;
             }
-            if (e.Key == Key.Right)
+            if (e.Key == Key.Right || e.Key == Key.D)
             {
                 moveRight = true;
-            }
-        }
-
-        private void OnKeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Left)
-            {
-                moveLeft = false;
-            }
-            if (e.Key == Key.Right)
-            {
-                moveRight = false;
             }
 
             if (e.Key == Key.Space)
@@ -202,6 +191,21 @@ namespace Space_battle_shooter_WPF_MOO_ICT
                 MyCanvas.Children.Add(newBullet);
 
             }
+        }
+
+
+        private void OnKeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Left || e.Key == Key.A)
+            {
+                moveLeft = false;
+            }
+            if (e.Key == Key.Right || e.Key == Key.D)
+            {
+                moveRight = false;
+            }
+
+            
         }
 
         private void MakeEnemies()
