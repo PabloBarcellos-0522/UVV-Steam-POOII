@@ -33,6 +33,9 @@ namespace Space_battle_shooter_WPF_MOO_ICT
 
         Rect playerHitBox;
 
+        ImageBrush bg = new ImageBrush();
+        TranslateTransform bgTransform = new TranslateTransform();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -43,12 +46,14 @@ namespace Space_battle_shooter_WPF_MOO_ICT
 
             MyCanvas.Focus();
 
-            ImageBrush bg = new ImageBrush();
-
-            bg.ImageSource = new BitmapImage(new Uri("pack://application:,,,/images/purple.png"));
+            BitmapImage bgImg = new BitmapImage();
+            bgImg.BeginInit();
+            bgImg.UriSource = new Uri("pack://application:,,,/images/starsBG.png");
+            bgImg.CacheOption = BitmapCacheOption.OnLoad;
+            bgImg.EndInit();
+            bg.ImageSource = bgImg;
             bg.TileMode = TileMode.Tile;
-            bg.Viewport = new Rect(0, 0, 0.15, 0.15);
-            bg.ViewportUnits = BrushMappingMode.RelativeToBoundingBox;
+            bg.Transform = bgTransform;
             MyCanvas.Background = bg;
 
             ImageBrush playerImage = new ImageBrush();
@@ -60,6 +65,8 @@ namespace Space_battle_shooter_WPF_MOO_ICT
 
         private void GameLoop(object sender, EventArgs e)
         {
+            bgTransform.Y += 5;
+
             playerHitBox = new Rect(Canvas.GetLeft(player), Canvas.GetTop(player), player.Width, player.Height);
 
             enemyCounter -= 1;
