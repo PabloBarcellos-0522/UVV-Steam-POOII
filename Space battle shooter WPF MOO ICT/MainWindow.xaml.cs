@@ -36,10 +36,20 @@ namespace Space_battle_shooter_WPF_MOO_ICT
         ImageBrush bg = new ImageBrush();
         TranslateTransform bgTransform = new TranslateTransform();
 
+        public MainWindow(string shipImagePath)
+        {
+            InitializeComponent();
+            InitializeGame("pack://application:,,," + shipImagePath);
+        }
+
         public MainWindow()
         {
             InitializeComponent();
+            InitializeGame("pack://application:,,,/images/player.png");
+        }
 
+        private void InitializeGame(string playerImageUri)
+        {
             gameTimer.Interval = TimeSpan.FromMilliseconds(20);
             gameTimer.Tick += GameLoop;
             gameTimer.Start();
@@ -57,10 +67,8 @@ namespace Space_battle_shooter_WPF_MOO_ICT
             MyCanvas.Background = bg;
 
             ImageBrush playerImage = new ImageBrush();
-            playerImage.ImageSource = new BitmapImage(new Uri("pack://application:,,,/images/player.png"));
+            playerImage.ImageSource = new BitmapImage(new Uri(playerImageUri));
             player.Fill = playerImage;
-
-
         }
 
         private void GameLoop(object sender, EventArgs e)
@@ -91,7 +99,7 @@ namespace Space_battle_shooter_WPF_MOO_ICT
             {
                 Canvas.SetLeft(player, Canvas.GetLeft(player) - playerSpeed);
             }
-            if (moveRight == true && Canvas.GetLeft(player) + 90 < Application.Current.MainWindow.Width)
+            if (moveRight == true && Canvas.GetLeft(player) + player.Width < MyCanvas.ActualWidth)
             {
                 Canvas.SetLeft(player, Canvas.GetLeft(player) + playerSpeed);
             }
