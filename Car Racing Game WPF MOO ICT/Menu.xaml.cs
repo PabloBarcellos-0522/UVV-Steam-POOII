@@ -24,6 +24,7 @@ namespace Car_Racing_Game_WPF_MOO_ICT
             InitializeComponent();
         }
 
+            
         private void ButtonMenu_Click(object sender, RoutedEventArgs e)
         {
             MainWindow mainWindow = new MainWindow();
