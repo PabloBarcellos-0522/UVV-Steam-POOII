@@ -24,11 +24,13 @@ namespace Car_Racing_Game_WPF_MOO_ICT
             InitializeComponent();
         }
 
-            
+
         private void ButtonMenu_Click(object sender, RoutedEventArgs e)
         {
+            this.Hide();
             MainWindow mainWindow = new MainWindow();
-            mainWindow.Show();
+            mainWindow.ShowDialog();
+            this.Show();
             
         }
     }

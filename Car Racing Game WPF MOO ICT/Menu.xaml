@@ -14,8 +14,8 @@
         </Grid.Background>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="649*"/>
-            <ColumnDefinition Width="151*"/>
+            <ColumnDefinition Width="451*"/>
+            <ColumnDefinition Width="349*"/>
         </Grid.ColumnDefinitions>
         <Button x:Name="ButtonMenu" Content="Jogar" HorizontalAlignment="Left" Height="48" Margin="288,312,0,0" VerticalAlignment="Top" Width="155" Click="ButtonMenu_Click"/>
 
