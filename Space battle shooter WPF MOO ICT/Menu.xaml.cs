@@ -72,6 +72,24 @@ namespace Space_battle_shooter_WPF_MOO_ICT
             this.Show();
         }
 
-        
+        private void Menu_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            var controller = ImageBehavior.GetAnimationController(backgroundGifImage);
+            if (controller == null) return;
+
+            if ((bool)e.NewValue)
+            {
+                controller.Play();
+            }
+            else
+            {
+                controller.Pause();
+            }
+        }
+
+        private void quitButton_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
     }
 }

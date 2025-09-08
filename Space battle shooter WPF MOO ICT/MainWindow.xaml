@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Space_battle_shooter_WPF_MOO_ICT"
         mc:Ignorable="d"
-        Title="Space Battle Shooter Game MOO ICT" Height="615" Width="540" Background="Black">
+        Title="Space Battle Shooter Game MOO ICT" Height="615" Width="540" Background="Black" Closed="Window_Closed">
     <Canvas Name="MyCanvas" Focusable="True" Background="Black" KeyDown="OnKeyDown" KeyUp="OnKeyUp">
 
         <Rectangle Name="player" Height="50" Width="60" Fill="Yellow" Canvas.Left="246" Canvas.Top="498" />

@@ -170,7 +170,7 @@ namespace Space_battle_shooter_WPF_MOO_ICT
                 MessageBox.Show("Captain You have destroyed " + score + " Alien Ships" + Environment.NewLine + "Press Ok to Play Again", "MOO Says: ");
 
                 System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
-                Application.Current.Shutdown();
+                this.Close();
 
             }
 
@@ -221,6 +221,11 @@ namespace Space_battle_shooter_WPF_MOO_ICT
             }
 
             
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            gameTimer.Stop();
         }
 
         private void MakeEnemies()

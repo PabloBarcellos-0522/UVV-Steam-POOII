@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Space_battle_shooter_WPF_MOO_ICT"
         xmlns:gif="http://wpfanimatedgif.codeplex.com"
         mc:Ignorable="d"
-        Title="Menu" Height="450" Width="800">
+        Title="Menu" Height="450" Width="800" IsVisibleChanged="Menu_IsVisibleChanged">
 
     <Window.Resources>
         <Style TargetType="Button">
@@ -84,6 +84,7 @@
             <Button x:Name="prevButton" Content="&lt;" Canvas.Left="274" Canvas.Top="185" Width="50" Height="30" Click="prevButton_Click"/>
             <Button x:Name="nextButton" Content="&gt;" Canvas.Left="464" Canvas.Top="185" Width="50" Height="30" Click="nextButton_Click"/>
             <Button x:Name="startButton" Content="Start" Canvas.Left="344" Canvas.Top="280" Width="100" Height="40" Click="startButton_Click" FontSize="18"/>
+            <Button x:Name="quitButton_Copiar" Content="Quit" Canvas.Left="343" Canvas.Top="338" Width="100" Height="40" Click="quitButton_Click" FontSize="18" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         </Canvas>
 
     </Grid>
