@@ -14,16 +14,51 @@ implementadas nos jogos do projeto.
 ## 🏎️ Jogo de Corrida
 
 ### Novos Recursos
-- **`💡 PLANEJADO`** **Seleção de Carros:**
- - **Descrição:** Adicionar uma tela de menu onde o jogador pode escolher entre carros com
-diferentes atributos (velocidade, aceleração, manobra).
- - **Data de Conclusão:**
+### Novos Recursos
+- **`✅ ADICIONADO`** **Mecânica "Near Miss(quase acidente)":**
+ - **Descrição:** O jogador recebe mais pontos ao passar perto de um carro adversário.
+ - **Data de Conclusão: 07/09/25 **
 
 <br>
 
-- **`💡 PLANEJADO`** **Menu Principal:**
- - **Descrição:** Tela inicial com as opções "Jogar" e "Sair".
- - **Data de Conclusão:** 
+- **` ✅ ADICIONADO`** **Menu Principal:**
+ - **Descrição:** Tela inicial com imagem e botão de inicio personalizado.
+ - **Data de Conclusão: 07/09/25** 
+
+
+
+<br>
+
+- **` ✅ ADICIONADO`** **Incremento no sistema de Pontuação:**
+ - **Descrição:** Pontos agora são calculados com base no tempo sobrevivido, carros destruidos no power up "power star" e pela mecânica near miss.
+ - **Data de Conclusão: 07/09/25** 
+
+<br>
+
+
+
+- **` ✅ ADICIONADO`** **Novo power up: Slow Time :**
+ - **Descrição:** Novo power up com modificação de mapa própria. Permite que o player, ao coletar um "floco de neve",pressione "espaço" para diminuir a velocidade dos carros. Pode ser ativado várias vezes até o fim do poder.
+ - **Data de Conclusão: 07/09/25** 
+
+<br>
+
+- **` ✅ ADICIONADO`** **Novo power up: Multiplicador de Pontos :**
+ - **Descrição:** Novo power up com modificação de mapa própria. Multiplica, em 2 vezes, todos os pontos coletados pelo player certo tempo depois de coletar o poder com icone "2x".
+ - **Data de Conclusão: 07/09/25** 
+
+<br>
+
+- **`✅ ADICIONADO`** **Melhorias de Interface :**
+ - **Descrição:** Todos os power ups mudam o cenário e o carro com cores diferentes permitindo melhor identificação do fim desses. Melhoria na identificação de carros que o player destruiu.
+ - **Data de Conclusão: 07/09/25** 
+
+<br>
+
+- **`⚠️ CORRIGIDO`** **Carro saí pra fora da tela do lado esquerdo da mapa :**
+ - **Descrição:** Carro saia para fora do mapa pelo lado direito da tela.
+ - **Data de Conclusão: 10/09/25** 
+
 
 <br>
 
