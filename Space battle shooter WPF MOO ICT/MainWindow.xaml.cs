@@ -27,7 +27,7 @@ namespace Space_battle_shooter_WPF_MOO_ICT
         int playerSpeed = 350;
         double limit = 50;
         int score = 0;
-        int damage = -10;
+        int damage = 0;
         double enemySpeed = 150;
         Rectangle? boss = null;
         Boolean bossActive = false;
@@ -85,6 +85,12 @@ namespace Space_battle_shooter_WPF_MOO_ICT
         private void GameLoop(object sender, EventArgs e)
         {
             if (!(e is RenderingEventArgs args)) return;
+            if (lastRenderTime == TimeSpan.Zero)
+            {
+                lastRenderTime = args.RenderingTime;
+                return;
+            }
+
             if (lastRenderTime == args.RenderingTime) return;
             
             double delta = (args.RenderingTime - lastRenderTime).TotalSeconds;
@@ -143,9 +149,31 @@ namespace Space_battle_shooter_WPF_MOO_ICT
 
                             if (bulletHitBox.IntersectsWith(enemyHit))
                             {
+                                string playerUriString = "";
+                                if (player.Fill is ImageBrush playerBrush && playerBrush.ImageSource is BitmapImage playerBitmap)
+                                {
+                                    playerUriString = playerBitmap.UriSource.ToString();
+                                }
+
+                                string enemyUriString = "";
+                                if (y.Fill is ImageBrush enemyBrush && enemyBrush.ImageSource is BitmapImage enemyBitmap)
+                                {
+                                    enemyUriString = enemyBitmap.UriSource.ToString();
+                                }
+
+
                                 itemRemover.Add(x);
                                 itemRemover.Add(y);
-                                score++;
+                                if (playerUriString == enemyUriString)
+                                {
+                                    score -= 1;
+                                }
+                                else
+                                {
+                                    score += 1;
+                                }
+
+
                             }
                         }
                     }
@@ -156,10 +184,29 @@ namespace Space_battle_shooter_WPF_MOO_ICT
                 {
                     Canvas.SetTop(x, Canvas.GetTop(x) + enemySpeed * delta);
 
+                    string playerUriString = "";
+                    if (player.Fill is ImageBrush playerBrush && playerBrush.ImageSource is BitmapImage playerBitmap)
+                    {
+                        playerUriString = playerBitmap.UriSource.ToString();
+                    }
+
+                    string enemyUriString = "";
+                    if (x.Fill is ImageBrush enemyBrush && enemyBrush.ImageSource is BitmapImage enemyBitmap)
+                    {
+                        enemyUriString = enemyBitmap.UriSource.ToString();
+                    }
+
                     if (Canvas.GetTop(x) > 750)
                     {
                         itemRemover.Add(x);
-                        damage += 10;
+                        if (playerUriString == enemyUriString)
+                        {
+                            score += 5;
+                        }
+                        else
+                        {
+                            damage += 10;
+                        }
                     }
 
                     Rect enemyHitBox = new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width, x.Height);
@@ -167,6 +214,10 @@ namespace Space_battle_shooter_WPF_MOO_ICT
                     if (playerHitBox.IntersectsWith(enemyHitBox))
                     {
                         itemRemover.Add(x);
+                        if (playerUriString == enemyUriString)
+                        {
+                            score -= 1;
+                        }
                         damage += 5;
                     }
 
@@ -191,7 +242,7 @@ namespace Space_battle_shooter_WPF_MOO_ICT
 
             }
 
-            if (score >= 1 && !bossActive)
+            if (score >= 70 && !bossActive)
             {
                 bossActive = true;
                 damage = 0;
@@ -286,7 +337,7 @@ namespace Space_battle_shooter_WPF_MOO_ICT
         {
             ImageBrush enemySprite = new ImageBrush();
 
-            enemySpriteCounter = rand.Next(1, 6);
+            enemySpriteCounter = rand.Next(1, 7);
 
             switch (enemySpriteCounter)
             {
@@ -305,6 +356,12 @@ namespace Space_battle_shooter_WPF_MOO_ICT
                 case 5:
                     enemySprite.ImageSource = new BitmapImage(new Uri("pack://application:,,,/images/5.png"));
                     break;
+                case 6:
+                    enemySprite.ImageSource = new BitmapImage(new Uri("pack://application:,,,/images/player.png"));
+                    RotateTransform rotate = new RotateTransform(180, 0.5, 0.5);
+                    enemySprite.RelativeTransform = rotate;
+
+                    break;
             }
 
             Rectangle newEnemy = new Rectangle
@@ -314,6 +371,35 @@ namespace Space_battle_shooter_WPF_MOO_ICT
                 Width = 56,
                 Fill = enemySprite
             };
+
+            string playerUriString = "";
+            if (player.Fill is ImageBrush playerBrush && playerBrush.ImageSource is BitmapImage playerBitmap)
+            {
+                playerUriString = playerBitmap.UriSource.ToString();
+            }
+
+            string enemyUriString = "";
+            if (newEnemy.Fill is ImageBrush enemyBrush && enemyBrush.ImageSource is BitmapImage enemyBitmap)
+            {
+                enemyUriString = enemyBitmap.UriSource.ToString();
+            }
+
+            var shadowEffect = new System.Windows.Media.Effects.DropShadowEffect
+            {
+                ShadowDepth = 0,
+                BlurRadius = 30
+            };
+
+            if (playerUriString == enemyUriString)
+            {
+                shadowEffect.Color = Colors.LawnGreen;
+            }
+            else
+            {
+                shadowEffect.Color = Colors.Red;
+            }
+
+            newEnemy.Effect = shadowEffect;
 
             Canvas.SetTop(newEnemy, -100);
             Canvas.SetLeft(newEnemy, rand.Next(30, 430));
