@@ -82,3 +82,22 @@ diferentes atributos (velocidade, aceleração, manobra).
  - **Descrição:** Feature visual que tansforma os jogadores em preto e branco e mudando a cor da bola para a cor que a acertou
  - **Data de Conclusão:** 02/04/2025
 
+<br>
+
+---
+<br>
+
+## 🏓 Jogo Tiros espaciais
+
+### Novos Recursos
+- **`✅ ADICIONADO`** **Menu Animado:**
+ - **Descrição:** Menu feito com um gif animado com botões de iniciar e sair do jogo
+ - **Data de Conclusão:** 08/09/2025
+
+<br>
+
+-**`✅ ADICIONADO`** **Escolha de naves pelo menu:**
+ - **Descrição:** Agora o player pode selecionar sua nave inicial diretamente pelo menu do jogo
+ - **Data de Conclusão:** 08/09/2025 
+
+<br>
