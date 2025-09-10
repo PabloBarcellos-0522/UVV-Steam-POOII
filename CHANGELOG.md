@@ -87,7 +87,7 @@ diferentes atributos (velocidade, aceleração, manobra).
 ---
 <br>
 
-## 🏓 Jogo Tiros espaciais
+## 👽 Jogo Tiros espaciais
 
 ### Novos Recursos
 - **`✅ ADICIONADO`** **Menu Animado:**
@@ -96,7 +96,7 @@ diferentes atributos (velocidade, aceleração, manobra).
 
 <br>
 
--**`✅ ADICIONADO`** **Escolha de naves pelo menu:**
+- **`✅ ADICIONADO`** **Escolha de naves pelo menu:**
  - **Descrição:** Agora o player pode selecionar sua nave inicial diretamente pelo menu do jogo
  - **Data de Conclusão:** 08/09/2025 
 
