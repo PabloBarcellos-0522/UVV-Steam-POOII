@@ -14,9 +14,6 @@ using System.Windows.Shapes;
 
 namespace Space_battle_shooter_WPF_MOO_ICT
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         private TimeSpan lastRenderTime = TimeSpan.Zero;
@@ -26,12 +23,15 @@ namespace Space_battle_shooter_WPF_MOO_ICT
         Random rand = new Random();
 
         int enemySpriteCounter = 0;
-        double enemySpawnCoolDown = 3.3; // Initial spawn time in seconds (100 frames / 30fps)
-        int playerSpeed = 350; // 10 pixels/frame * 30 fps = 300 pixels/second
+        double enemySpawnCoolDown = 3.3;
+        int playerSpeed = 350;
         double limit = 50;
         int score = 0;
-        int damage = 0;
-        double enemySpeed = 150; // 5 pixels/frame * 30 fps = 150 pixels/second
+        int damage = -10;
+        double enemySpeed = 150;
+        Rectangle? boss = null;
+        Boolean bossActive = false;
+        int bossTime = 0;
 
 
         Rect playerHitBox;
@@ -90,7 +90,7 @@ namespace Space_battle_shooter_WPF_MOO_ICT
             double delta = (args.RenderingTime - lastRenderTime).TotalSeconds;
             lastRenderTime = args.RenderingTime;
 
-            bgTransform.Y += 150 * delta; // 5px * 30fps = 150px/s
+            bgTransform.Y += 150 * delta;
 
             playerHitBox = new Rect(Canvas.GetLeft(player), Canvas.GetTop(player), player.Width, player.Height);
 
@@ -98,18 +98,18 @@ namespace Space_battle_shooter_WPF_MOO_ICT
 
             if (limit > 20)
             {
-                limit -= 1.5 * delta; // 0.05 "frames" * 30fps = 1.5/s
+                limit -= 1.5 * delta;
             }
 
-            enemySpeed += 4.5 * delta; // 0.005px/frame/frame * (30fps)^2 = 4.5 px/s^2
+            enemySpeed += 4.5 * delta;
 
             scoreText.Content = "Score: " + score;
-            damageText.Content = "Damage " + damage;
+            damageText.Content = "Damage: " + damage;
 
-            if (enemySpawnCoolDown < 0)
+            if (enemySpawnCoolDown < 0 && !bossActive)
             {
                 MakeEnemies();
-                enemySpawnCoolDown = limit / 30.0; // limit is in "frames", convert to seconds based on 30fps
+                enemySpawnCoolDown = limit / 30.0;
             }
 
             if (moveLeft == true && Canvas.GetLeft(player) > 0)
@@ -126,7 +126,7 @@ namespace Space_battle_shooter_WPF_MOO_ICT
             {
                 if (x is Rectangle && (string)x.Tag == "bullet")
                 {
-                    Canvas.SetTop(x, Canvas.GetTop(x) - (600 * delta)); // 20px * 30fps = 600px/s
+                    Canvas.SetTop(x, Canvas.GetTop(x) - (600 * delta));
 
                     Rect bulletHitBox = new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width, x.Height);
 
@@ -191,7 +191,44 @@ namespace Space_battle_shooter_WPF_MOO_ICT
 
             }
 
+            if (score >= 1 && !bossActive)
+            {
+                bossActive = true;
+                damage = 0;
+                bossTime = 0;
+            }
 
+            if (bossActive)
+            {
+                if (boss == null)
+                {
+                    bossTime += 1;
+                    if (bossTime >= 150)
+                    {
+                        ImageBrush bossImg = new ImageBrush();
+                        bossImg.ImageSource = new BitmapImage(new Uri("pack://application:,,,/images/Abrantes.png"));
+
+                        boss = new Rectangle
+                        {
+                            Tag = "boss",
+                            Height = 250,
+                            Width = 300,
+                            Fill = bossImg
+                        };
+
+                        Canvas.SetTop(boss, -300);
+                        Canvas.SetLeft(boss, (MyCanvas.ActualWidth - boss.Width) / 2);
+                        MyCanvas.Children.Add(boss);
+                    }
+
+                }
+                else if (Canvas.GetTop(boss) < 15)
+                {
+                    Canvas.SetTop(boss, Canvas.GetTop(boss) + (30 * delta));
+                }
+
+
+            }
         }
 
         private void OnKeyDown(object sender, KeyEventArgs e)
@@ -249,7 +286,7 @@ namespace Space_battle_shooter_WPF_MOO_ICT
         {
             ImageBrush enemySprite = new ImageBrush();
 
-            enemySpriteCounter = rand.Next(1, 5);
+            enemySpriteCounter = rand.Next(1, 6);
 
             switch (enemySpriteCounter)
             {
