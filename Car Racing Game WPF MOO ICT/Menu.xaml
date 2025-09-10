@@ -5,19 +5,27 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Car_Racing_Game_WPF_MOO_ICT"
         mc:Ignorable="d"
-        Title="Menu" Height="450" Width="800">
-    <Grid>
+        Title="Menu" Height="517" Width="525">
+    <Grid Margin="0,0,-13,-6">
         <Grid.Background>
 
-            <ImageBrush ImageSource = "pack://application:,,,/images/menuBackground.png" Stretch="UniformToFill"/>
+            <ImageBrush ImageSource = "/images/menuBackground.png" Stretch="Fill"/>
 
         </Grid.Background>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="451*"/>
-            <ColumnDefinition Width="349*"/>
+            <ColumnDefinition Width="180*"/>
+            <ColumnDefinition Width="174*"/>
+            <ColumnDefinition Width="0*"/>
+            <ColumnDefinition Width="29*"/>
+            <ColumnDefinition Width="83*"/>
+            <ColumnDefinition Width="72*"/>
         </Grid.ColumnDefinitions>
-        <Button x:Name="ButtonMenu" Content="Jogar" HorizontalAlignment="Left" Height="48" Margin="288,312,0,0" VerticalAlignment="Top" Width="155" Click="ButtonMenu_Click"/>
+        <Button     x:Name="ButtonMenu" Content="Jogar" Height="48" Margin="174,332,10,0" VerticalAlignment="Top" Click="ButtonMenu_Click" FontWeight="Bold" FontSize="14" Grid.ColumnSpan="2">
+            <Button.Background>
+                <ImageBrush ImageSource="/BotaoDesign.png"/>
+            </Button.Background>
+        </Button>
 
     </Grid>
 </Window>
