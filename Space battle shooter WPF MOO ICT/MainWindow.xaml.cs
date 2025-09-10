@@ -1,4 +1,7 @@
-﻿using System.Text;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -8,35 +11,29 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Windows.Threading;
 
 namespace Space_battle_shooter_WPF_MOO_ICT
 {
-    
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
-        DispatcherTimer gameTimer = new DispatcherTimer();
+        private TimeSpan lastRenderTime = TimeSpan.Zero;
         bool moveLeft, moveRight;
         List<Rectangle> itemRemover = new List<Rectangle>();
+
         Random rand = new Random();
 
-        private List<string> shipImage;
-
-        int abrantesDmg = 0;
-        bool bossfight = false;
-
-        int alliesCounter = 100;
+        private List<string> shipImage;        
         int enemySpriteCounter = 0;
-        int enemyCounter = 100;
-        int playerSpeed = 12;
+        double enemySpawnCoolDown = 3.3;
+        int playerSpeed = 350;
         double limit = 50;
         int score = 0;
         int damage = 0;
-        double enemySpeed = 5;
-        string playerShipPath;
+        double enemySpeed = 150;
+        Rectangle? boss = null;
+        Boolean bossActive = false;
+        int bossTime = 0;
+
 
         Rect playerHitBox;
 
@@ -45,7 +42,6 @@ namespace Space_battle_shooter_WPF_MOO_ICT
 
         public MainWindow(string shipImagePath)
         {
-            playerShipPath = shipImagePath;
             InitializeComponent();
             InitializeGame("pack://application:,,," + shipImagePath);
             shipImage = new List<string>
@@ -85,15 +81,11 @@ namespace Space_battle_shooter_WPF_MOO_ICT
         {
             InitializeComponent();
             InitializeGame("pack://application:,,,/images/player.png");
-            
-
         }
 
         private void InitializeGame(string playerImageUri)
         {
-            gameTimer.Interval = TimeSpan.FromMilliseconds(20);
-            gameTimer.Tick += GameLoop;
-            gameTimer.Start();
+            CompositionTarget.Rendering += GameLoop;
 
             MyCanvas.Focus();
 
@@ -124,44 +116,47 @@ namespace Space_battle_shooter_WPF_MOO_ICT
 
         private void GameLoop(object sender, EventArgs e)
         {
-            bgTransform.Y += 5;
-
-            //Frequencia com que aliados vão aparecer
-            alliesCounter -= 1;
-            if (alliesCounter < 0 && (bossfight ==false))
+            if (!(e is RenderingEventArgs args)) return;
+            if (lastRenderTime == TimeSpan.Zero)
             {
-                MakeAllies(playerShipPath);
-                alliesCounter = rand.Next(200, 500);
-
+                lastRenderTime = args.RenderingTime;
+                return;
             }
+
+            if (lastRenderTime == args.RenderingTime) return;
+            
+            double delta = (args.RenderingTime - lastRenderTime).TotalSeconds;
+            lastRenderTime = args.RenderingTime;
+
+            bgTransform.Y += 150 * delta;
 
             playerHitBox = new Rect(Canvas.GetLeft(player), Canvas.GetTop(player), player.Width, player.Height);
 
-            enemyCounter -= 1;
+            enemySpawnCoolDown -= delta;
 
             if (limit > 20)
             {
-                limit -= 0.05;
+                limit -= 1.5 * delta;
             }
 
-            enemySpeed += 0.005;
+            enemySpeed += 4.5 * delta;
 
             scoreText.Content = "Score: " + score;
-            damageText.Content = "Damage " + damage;
+            damageText.Content = "Damage: " + damage;
 
-            if (enemyCounter < 0 && (bossfight == false))
+            if (enemySpawnCoolDown < 0 && !bossActive)
             {
                 MakeEnemies();
-                enemyCounter = (int)limit;
+                enemySpawnCoolDown = limit / 30.0;
             }
 
             if (moveLeft == true && Canvas.GetLeft(player) > 0)
             {
-                Canvas.SetLeft(player, Canvas.GetLeft(player) - playerSpeed);
+                Canvas.SetLeft(player, Canvas.GetLeft(player) - playerSpeed * delta);
             }
             if (moveRight == true && Canvas.GetLeft(player) + player.Width < MyCanvas.ActualWidth)
             {
-                Canvas.SetLeft(player, Canvas.GetLeft(player) + playerSpeed);
+                Canvas.SetLeft(player, Canvas.GetLeft(player) + playerSpeed * delta);
             }
 
 
@@ -169,7 +164,7 @@ namespace Space_battle_shooter_WPF_MOO_ICT
             {
                 if (x is Rectangle && (string)x.Tag == "bullet")
                 {
-                    Canvas.SetTop(x, Canvas.GetTop(x) - 20);
+                    Canvas.SetTop(x, Canvas.GetTop(x) - (600 * delta));
 
                     Rect bulletHitBox = new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width, x.Height);
 
@@ -180,107 +175,82 @@ namespace Space_battle_shooter_WPF_MOO_ICT
 
                     foreach (var y in MyCanvas.Children.OfType<Rectangle>())
                     {
-                        
-                        if (y is Rectangle && (string)y.Tag == "enemy"  )
+                        if (y is Rectangle && (string)y.Tag == "enemy")
                         {
                             Rect enemyHit = new Rect(Canvas.GetLeft(y), Canvas.GetTop(y), y.Width, y.Height);
 
                             if (bulletHitBox.IntersectsWith(enemyHit))
                             {
+                                string playerUriString = "";
+                                if (player.Fill is ImageBrush playerBrush && playerBrush.ImageSource is BitmapImage playerBitmap)
+                                {
+                                    playerUriString = playerBitmap.UriSource.ToString();
+                                }
+
+                                string enemyUriString = "";
+                                if (y.Fill is ImageBrush enemyBrush && enemyBrush.ImageSource is BitmapImage enemyBitmap)
+                                {
+                                    enemyUriString = enemyBitmap.UriSource.ToString();
+                                }
+
+
                                 itemRemover.Add(x);
                                 itemRemover.Add(y);
-                                score++;
-                            }
-                        } else if (y is Rectangle && (string)y.Tag == "allie")
-                        {
-                            Rect allieHit = new Rect(Canvas.GetLeft(y), Canvas.GetTop(y), y.Width, y.Height);
+                                if (playerUriString == enemyUriString)
+                                {
+                                    score -= 1;
+                                }
+                                else
+                                {
+                                    score += 1;
+                                }
 
-                            if (bulletHitBox.IntersectsWith(allieHit))
-                            {
-                                itemRemover.Add(x);
-                                itemRemover.Add(y);
-                                damage += 20;
-                            }
 
+                            }
                         }
-
-
-
-                    }
-
-                    //Ativa o modo bossfight
-                    if (score >= 1)
-                    {
-                        damage = 0;
-                        score = 0;
-                        bossfight = true;
-                        bossfightAbrantes();
                     }
 
                 }
 
                 if (x is Rectangle && (string)x.Tag == "enemy")
                 {
+                    Canvas.SetTop(x, Canvas.GetTop(x) + enemySpeed * delta);
 
-                    if (bossfight && (string)x.Name != "player")
+                    string playerUriString = "";
+                    if (player.Fill is ImageBrush playerBrush && playerBrush.ImageSource is BitmapImage playerBitmap)
                     {
-                        itemRemover.Add(x);
+                        playerUriString = playerBitmap.UriSource.ToString();
                     }
 
-                    Canvas.SetTop(x, Canvas.GetTop(x) + enemySpeed);
-
-                    if (Canvas.GetTop(x) > 750 )
+                    string enemyUriString = "";
+                    if (x.Fill is ImageBrush enemyBrush && enemyBrush.ImageSource is BitmapImage enemyBitmap)
                     {
-                        itemRemover.Add(x);
-                        damage += 10;
-                    }
-
-                    
-
-
-                    Rect enemyHitBox = new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width, x.Height);
-
-
-                    if (playerHitBox.IntersectsWith(enemyHitBox))
-                    {
-                        itemRemover.Add(x);
-                        damage += 5;
-                    }
-
-                    
-
-                }
-
-                //alliados avançam e reduzem o dano se passarem, mas se baterem comm o player, dão o dobro de dano
-                if (x is Rectangle && (string)x.Tag == "allie")
-                {
-                    Canvas.SetTop(x, Canvas.GetTop(x) + enemySpeed);
-
-                    if (bossfight && (string)x.Name != "player")
-                    {
-                        itemRemover.Add(x);
+                        enemyUriString = enemyBitmap.UriSource.ToString();
                     }
 
                     if (Canvas.GetTop(x) > 750)
                     {
                         itemRemover.Add(x);
-
-                        damage -= 10;
-
-
-
-                       
-                        
-
+                        if (playerUriString == enemyUriString)
+                        {
+                            score += 5;
+                        }
+                        else
+                        {
+                            damage += 10;
+                        }
                     }
 
-                    Rect allieHitBox = new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width, x.Height);
+                    Rect enemyHitBox = new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width, x.Height);
 
-
-                    if (playerHitBox.IntersectsWith(allieHitBox))
+                    if (playerHitBox.IntersectsWith(enemyHitBox))
                     {
                         itemRemover.Add(x);
-                        damage += 20;
+                        if (playerUriString == enemyUriString)
+                        {
+                            score -= 1;
+                        }
+                        damage += 5;
                     }
 
                 }
@@ -290,12 +260,11 @@ namespace Space_battle_shooter_WPF_MOO_ICT
             {
                 MyCanvas.Children.Remove(i);
             }
-            
 
-            //Verifica dano das naves
-            if (damage > 99 && ((playerShipPath == "/images/player.png") || (playerShipPath == "/images/4.png")))
+
+            if (damage > 99)
             {
-                gameTimer.Stop();
+                CompositionTarget.Rendering -= GameLoop;
                 damageText.Content = "Damage: 100";
                 damageText.Foreground = Brushes.Red;
                 MessageBox.Show("Captain You have destroyed " + score + " Alien Ships" + Environment.NewLine + "Press Ok to Play Again", "MOO Says: ");
@@ -304,28 +273,42 @@ namespace Space_battle_shooter_WPF_MOO_ICT
                 this.Close();
 
             }
-            else if (damage > 70 && ((playerShipPath == "/images/1.png") || (playerShipPath == "/images/3.png")))
+
+            if (score >= 70 && !bossActive)
             {
-                gameTimer.Stop();
-                damageText.Content = "Damage: 100";
-                damageText.Foreground = Brushes.Red;
-                MessageBox.Show("Captain You have destroyed " + score + " Alien Ships" + Environment.NewLine + "Press Ok to Play Again", "MOO Says: ");
-
-                System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
-                this.Close();
-
-
+                bossActive = true;
+                damage = 0;
+                bossTime = 0;
             }
-            else if (damage > 120 && ((playerShipPath == "/images/2.png") || (playerShipPath == "/images/5.png")))
+
+            if (bossActive)
             {
-                gameTimer.Stop();
-                damageText.Content = "Damage: 100";
-                damageText.Foreground = Brushes.Red;
-                MessageBox.Show("Captain You have destroyed " + score + " Alien Ships" + Environment.NewLine + "Press Ok to Play Again", "MOO Says: ");
+                if (boss == null)
+                {
+                    bossTime += 1;
+                    if (bossTime >= 150)
+                    {
+                        ImageBrush bossImg = new ImageBrush();
+                        bossImg.ImageSource = new BitmapImage(new Uri("pack://application:,,,/images/Abrantes.png"));
 
-                System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
-                this.Close();
+                        boss = new Rectangle
+                        {
+                            Tag = "boss",
+                            Height = 250,
+                            Width = 300,
+                            Fill = bossImg
+                        };
 
+                        Canvas.SetTop(boss, -300);
+                        Canvas.SetLeft(boss, (MyCanvas.ActualWidth - boss.Width) / 2);
+                        MyCanvas.Children.Add(boss);
+                    }
+
+                }
+                else if (Canvas.GetTop(boss) < 15)
+                {
+                    Canvas.SetTop(boss, Canvas.GetTop(boss) + (30 * delta));
+                }
 
 
             }
@@ -344,7 +327,6 @@ namespace Space_battle_shooter_WPF_MOO_ICT
 
             if (e.Key == Key.Space)
             {
-                
                 Rectangle newBullet = new Rectangle
                 {
                     Tag = "bullet",
@@ -380,6 +362,7 @@ namespace Space_battle_shooter_WPF_MOO_ICT
 
         private void Window_Closed(object sender, EventArgs e)
         {
+            CompositionTarget.Rendering -= GameLoop;
             gameTimer.Stop();
         }
 
@@ -387,7 +370,7 @@ namespace Space_battle_shooter_WPF_MOO_ICT
         {
             ImageBrush enemySprite = new ImageBrush();
 
-            enemySpriteCounter = rand.Next(1, 5);
+            enemySpriteCounter = rand.Next(1, 7);
 
             switch (enemySpriteCounter)
             {
@@ -406,6 +389,12 @@ namespace Space_battle_shooter_WPF_MOO_ICT
                 case 5:
                     enemySprite.ImageSource = new BitmapImage(new Uri("pack://application:,,,/images/5.png"));
                     break;
+                case 6:
+                    enemySprite.ImageSource = new BitmapImage(new Uri("pack://application:,,,/images/player.png"));
+                    RotateTransform rotate = new RotateTransform(180, 0.5, 0.5);
+                    enemySprite.RelativeTransform = rotate;
+
+                    break;
             }
 
             Rectangle newEnemy = new Rectangle
@@ -416,53 +405,38 @@ namespace Space_battle_shooter_WPF_MOO_ICT
                 Fill = enemySprite
             };
 
+            string playerUriString = "";
+            if (player.Fill is ImageBrush playerBrush && playerBrush.ImageSource is BitmapImage playerBitmap)
+            {
+                playerUriString = playerBitmap.UriSource.ToString();
+            }
+
+            string enemyUriString = "";
+            if (newEnemy.Fill is ImageBrush enemyBrush && enemyBrush.ImageSource is BitmapImage enemyBitmap)
+            {
+                enemyUriString = enemyBitmap.UriSource.ToString();
+            }
+
+            var shadowEffect = new System.Windows.Media.Effects.DropShadowEffect
+            {
+                ShadowDepth = 0,
+                BlurRadius = 30
+            };
+
+            if (playerUriString == enemyUriString)
+            {
+                shadowEffect.Color = Colors.LawnGreen;
+            }
+            else
+            {
+                shadowEffect.Color = Colors.Red;
+            }
+
+            newEnemy.Effect = shadowEffect;
+
             Canvas.SetTop(newEnemy, -100);
             Canvas.SetLeft(newEnemy, rand.Next(30, 430));
             MyCanvas.Children.Add(newEnemy);
-
-        }
-        private void MakeAllies(string playerImagePath)
-        {
-            ImageBrush allie = new ImageBrush();
-
-            allie.ImageSource = new BitmapImage(new Uri("pack://application:,,," + playerImagePath));
-            
-            if (playerImagePath == "/images/player.png")
-            {
-                RotateTransform rotate = new RotateTransform();
-                rotate.Angle = 180;
-                rotate.CenterX = 0.5;
-                rotate.CenterY = 0.5;
-                allie.RelativeTransform = rotate;
-            }
-            
-
-            Rectangle newAllie = new Rectangle
-            {
-                Tag = "allie",
-                Height = 50,
-                Width = 56,
-                Fill = allie
-            };
-
-            Canvas.SetTop(newAllie, -100);
-            Canvas.SetLeft(newAllie, rand.Next(30, 430));
-            MyCanvas.Children.Add(newAllie);
-
-        }
-        private void bossfightAbrantes()
-        {
-            ImageBrush AbrantesImg = new ImageBrush();
-
-            AbrantesImg.ImageSource = new BitmapImage(new Uri("pack://application:,,,/images/Abrantes.png" ));
-
-            Rectangle AbrantesRectangle = new Rectangle
-            {
-                Tag = "enemy",
-                Height = 200,
-                Width = 265,
-                Fill = AbrantesImg
-            };
 
         }
     }
