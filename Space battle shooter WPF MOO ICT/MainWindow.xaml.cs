@@ -1,4 +1,7 @@
-﻿using System.Text;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -8,7 +11,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Windows.Threading;
 
 namespace Space_battle_shooter_WPF_MOO_ICT
 {
@@ -17,19 +19,19 @@ namespace Space_battle_shooter_WPF_MOO_ICT
     /// </summary>
     public partial class MainWindow : Window
     {
-        DispatcherTimer gameTimer = new DispatcherTimer();
+        private TimeSpan lastRenderTime = TimeSpan.Zero;
         bool moveLeft, moveRight;
         List<Rectangle> itemRemover = new List<Rectangle>();
 
         Random rand = new Random();
 
         int enemySpriteCounter = 0;
-        int enemyCounter = 100;
-        int playerSpeed = 10;
+        double enemySpawnCoolDown = 3.3; // Initial spawn time in seconds (100 frames / 30fps)
+        int playerSpeed = 350; // 10 pixels/frame * 30 fps = 300 pixels/second
         double limit = 50;
         int score = 0;
         int damage = 0;
-        double enemySpeed = 5;
+        double enemySpeed = 150; // 5 pixels/frame * 30 fps = 150 pixels/second
 
 
         Rect playerHitBox;
@@ -51,9 +53,7 @@ namespace Space_battle_shooter_WPF_MOO_ICT
 
         private void InitializeGame(string playerImageUri)
         {
-            gameTimer.Interval = TimeSpan.FromMilliseconds(20);
-            gameTimer.Tick += GameLoop;
-            gameTimer.Start();
+            CompositionTarget.Rendering += GameLoop;
 
             MyCanvas.Focus();
 
@@ -84,35 +84,41 @@ namespace Space_battle_shooter_WPF_MOO_ICT
 
         private void GameLoop(object sender, EventArgs e)
         {
-            bgTransform.Y += 5;
+            if (!(e is RenderingEventArgs args)) return;
+            if (lastRenderTime == args.RenderingTime) return;
+            
+            double delta = (args.RenderingTime - lastRenderTime).TotalSeconds;
+            lastRenderTime = args.RenderingTime;
+
+            bgTransform.Y += 150 * delta; // 5px * 30fps = 150px/s
 
             playerHitBox = new Rect(Canvas.GetLeft(player), Canvas.GetTop(player), player.Width, player.Height);
 
-            enemyCounter -= 1;
+            enemySpawnCoolDown -= delta;
 
             if (limit > 20)
             {
-                limit -= 0.05;
+                limit -= 1.5 * delta; // 0.05 "frames" * 30fps = 1.5/s
             }
 
-            enemySpeed += 0.005;
+            enemySpeed += 4.5 * delta; // 0.005px/frame/frame * (30fps)^2 = 4.5 px/s^2
 
             scoreText.Content = "Score: " + score;
             damageText.Content = "Damage " + damage;
 
-            if (enemyCounter < 0)
+            if (enemySpawnCoolDown < 0)
             {
                 MakeEnemies();
-                enemyCounter = (int)limit;
+                enemySpawnCoolDown = limit / 30.0; // limit is in "frames", convert to seconds based on 30fps
             }
 
             if (moveLeft == true && Canvas.GetLeft(player) > 0)
             {
-                Canvas.SetLeft(player, Canvas.GetLeft(player) - playerSpeed);
+                Canvas.SetLeft(player, Canvas.GetLeft(player) - playerSpeed * delta);
             }
             if (moveRight == true && Canvas.GetLeft(player) + player.Width < MyCanvas.ActualWidth)
             {
-                Canvas.SetLeft(player, Canvas.GetLeft(player) + playerSpeed);
+                Canvas.SetLeft(player, Canvas.GetLeft(player) + playerSpeed * delta);
             }
 
 
@@ -120,7 +126,7 @@ namespace Space_battle_shooter_WPF_MOO_ICT
             {
                 if (x is Rectangle && (string)x.Tag == "bullet")
                 {
-                    Canvas.SetTop(x, Canvas.GetTop(x) - 20);
+                    Canvas.SetTop(x, Canvas.GetTop(x) - (600 * delta)); // 20px * 30fps = 600px/s
 
                     Rect bulletHitBox = new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width, x.Height);
 
@@ -148,7 +154,7 @@ namespace Space_battle_shooter_WPF_MOO_ICT
 
                 if (x is Rectangle && (string)x.Tag == "enemy")
                 {
-                    Canvas.SetTop(x, Canvas.GetTop(x) + enemySpeed);
+                    Canvas.SetTop(x, Canvas.GetTop(x) + enemySpeed * delta);
 
                     if (Canvas.GetTop(x) > 750)
                     {
@@ -175,7 +181,7 @@ namespace Space_battle_shooter_WPF_MOO_ICT
 
             if (damage > 99)
             {
-                gameTimer.Stop();
+                CompositionTarget.Rendering -= GameLoop;
                 damageText.Content = "Damage: 100";
                 damageText.Foreground = Brushes.Red;
                 MessageBox.Show("Captain You have destroyed " + score + " Alien Ships" + Environment.NewLine + "Press Ok to Play Again", "MOO Says: ");
@@ -236,7 +242,7 @@ namespace Space_battle_shooter_WPF_MOO_ICT
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            gameTimer.Stop();
+            CompositionTarget.Rendering -= GameLoop;
         }
 
         private void MakeEnemies()
