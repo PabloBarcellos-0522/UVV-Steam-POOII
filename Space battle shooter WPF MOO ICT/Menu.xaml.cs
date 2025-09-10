@@ -41,7 +41,16 @@ namespace Space_battle_shooter_WPF_MOO_ICT
 
         private void ShowCurrentShip()
         {
-            playerShipImage.Source = new BitmapImage(new Uri("pack://application:,,," + shipImages[currentShipIndex]));
+            BitmapImage img = new BitmapImage();
+            img.BeginInit();
+            img.UriSource = new Uri("pack://application:,,," + shipImages[currentShipIndex]);
+
+            if (shipImages[currentShipIndex] != "/images/player.png")
+            {
+                img.Rotation = Rotation.Rotate180;
+            }
+            img.EndInit();
+            playerShipImage.Source = img;
         }
 
         private void prevButton_Click(object sender, RoutedEventArgs e)
@@ -90,6 +99,7 @@ namespace Space_battle_shooter_WPF_MOO_ICT
         private void quitButton_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
+            //System.Windows.Application.Current.Shutdown();
         }
     }
 }

@@ -31,6 +31,7 @@ namespace Space_battle_shooter_WPF_MOO_ICT
         int damage = 0;
         double enemySpeed = 5;
 
+
         Rect playerHitBox;
 
         ImageBrush bg = new ImageBrush();
@@ -66,7 +67,17 @@ namespace Space_battle_shooter_WPF_MOO_ICT
             bg.Transform = bgTransform;
             MyCanvas.Background = bg;
 
+            
             ImageBrush playerImage = new ImageBrush();
+            if (playerImageUri != "pack://application:,,,/images/player.png")
+            {
+                RotateTransform rotate = new RotateTransform();
+                rotate.Angle = 180;
+                rotate.CenterX = 0.5;
+                rotate.CenterY = 0.5;
+                playerImage.RelativeTransform = rotate;
+            }
+
             playerImage.ImageSource = new BitmapImage(new Uri(playerImageUri));
             player.Fill = playerImage;
         }
