@@ -16,6 +16,8 @@
     <None Remove="images\3.png" />
     <None Remove="images\4.png" />
     <None Remove="images\5.png" />
+    <None Remove="images\Abrantes-Shoting.png" />
+    <None Remove="images\Abrantes.png" />
     <None Remove="images\player.png" />
     <None Remove="menuBG.png" />
     <None Remove="Stars-BG.png" />
@@ -31,6 +33,8 @@
     <Resource Include="images\3.png" />
     <Resource Include="images\4.png" />
     <Resource Include="images\5.png" />
+    <Resource Include="images\Abrantes-Shoting.png" />
+    <Resource Include="images\Abrantes.png" />
     <Resource Include="images\player.png" />
     <Resource Include="images\starsBG.png" />
     <Resource Include="images\menuBG.png" />

@@ -11,7 +11,7 @@
         <Rectangle Name="player" Height="50" Width="60" Fill="Yellow" Canvas.Left="246" Canvas.Top="498" />
 
         <Label Name="scoreText" Content="Score: 0" FontSize="18" FontWeight="Bold" Foreground="White" />
-        <Label Name="damageText" Content="Score: 0" FontSize="18" FontWeight="Bold" Foreground="White" Canvas.Left="395" />
+        <Label Name="damageText" Content="Damage: 0" FontSize="18" FontWeight="Bold" Foreground="White" Canvas.Left="395" />
 
     </Canvas>
 </Window>

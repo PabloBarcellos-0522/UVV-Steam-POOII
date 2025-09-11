@@ -15,9 +15,6 @@ using WpfAnimatedGif;
 
 namespace Space_battle_shooter_WPF_MOO_ICT
 {
-    /// <summary>
-    /// Lógica interna para Menu.xaml
-    /// </summary>
     public partial class Menu : Window
     {
         private List<string> shipImages;
@@ -99,7 +96,6 @@ namespace Space_battle_shooter_WPF_MOO_ICT
         private void quitButton_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
-            //System.Windows.Application.Current.Shutdown();
         }
     }
 }
