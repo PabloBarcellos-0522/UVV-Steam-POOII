@@ -8,7 +8,7 @@
         Title="Space Battle Shooter Game MOO ICT" Height="615" Width="540" Background="Black" Closed="Window_Closed">
     <Canvas Name="MyCanvas" Focusable="True" Background="Black" KeyDown="OnKeyDown" KeyUp="OnKeyUp">
 
-        <Rectangle Name="player" Height="59" Width="36" Fill="Yellow" Canvas.Left="258" Canvas.Top="494" />
+        <Rectangle Name="player" Height="60" Width="60" Fill="Yellow" Canvas.Left="246" Canvas.Top="495" />
 
         <Label Name="scoreText" Content="Score: 0" FontSize="18" FontWeight="Bold" Foreground="White" />
         <Label Name="damageText" Content="Damage: 0" FontSize="18" FontWeight="Bold" Foreground="White" Canvas.Left="395" />

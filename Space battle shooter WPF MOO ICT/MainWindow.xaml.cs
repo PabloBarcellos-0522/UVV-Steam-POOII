@@ -57,22 +57,21 @@ namespace Space_battle_shooter_WPF_MOO_ICT
                 
                 if (shipImagePath == "/images/1.png")
                 {
-                     playerSpeed = 14;
-                    
+                     playerSpeed = 400;
                 }
 
                 if (shipImagePath == "/images/2.png")
                 {
-                    playerSpeed = 10;
+                    playerSpeed = 340;
                 }
                 if (shipImagePath == "/images/3.png")
                 {
-                    playerSpeed = 14;
-            }
+                    playerSpeed = 400;
+                }
                 
                 if (shipImagePath == "/images/5.png")
                 {
-                    playerSpeed = 10;
+                    playerSpeed = 340;
                 }
 
         }
@@ -198,7 +197,7 @@ namespace Space_battle_shooter_WPF_MOO_ICT
                                 itemRemover.Add(y);
                                 if (playerUriString == enemyUriString)
                                 {
-                                    score -= 1;
+                                    score -= 3;
                                 }
                                 else
                                 {
@@ -233,7 +232,7 @@ namespace Space_battle_shooter_WPF_MOO_ICT
                         itemRemover.Add(x);
                         if (playerUriString == enemyUriString)
                         {
-                            score += 5;
+                            score += 3;
                         }
                         else
                         {
@@ -363,7 +362,6 @@ namespace Space_battle_shooter_WPF_MOO_ICT
         private void Window_Closed(object sender, EventArgs e)
         {
             CompositionTarget.Rendering -= GameLoop;
-            gameTimer.Stop();
         }
 
         private void MakeEnemies()
