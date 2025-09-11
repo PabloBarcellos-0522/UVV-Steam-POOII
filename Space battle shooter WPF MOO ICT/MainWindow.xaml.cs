@@ -36,6 +36,7 @@ namespace Space_battle_shooter_WPF_MOO_ICT
         int bossTime = 0;
         int bossLife = 300;
         int cooldownBossAttacks = 0;
+        int bossSpeed = 100;
 
         //Duração dos ataques do boss
         int bossAttackTimer;
@@ -390,7 +391,22 @@ namespace Space_battle_shooter_WPF_MOO_ICT
                     Canvas.SetTop(boss, Canvas.GetTop(boss) + (30 * delta));
                 }
 
+                if (boss != null)
+                {
+                    if (Canvas.GetTop(boss) > 15)
+                    {
+                        Canvas.SetLeft(boss, Canvas.GetLeft(boss) - bossSpeed * delta);
+                    }
 
+                    if (Canvas.GetLeft(boss) > 0)
+                    {
+                        bossSpeed = -bossSpeed;
+                    }
+                    if (Canvas.GetLeft(boss) + boss.Width < MyCanvas.ActualWidth)
+                    {
+                        bossSpeed = -bossSpeed;
+                    }
+                }
             }
 
             cooldownBossAttacks += 1;
@@ -573,12 +589,12 @@ namespace Space_battle_shooter_WPF_MOO_ICT
                 Rectangle bossBullet = new Rectangle
                 {
                     Tag = "bossBullet",
-                    Height = 20,
-                    Width = 20,
+                    Height = 30,
+                    Width = 30,
                     Fill = Brushes.Yellow,
                     Stroke = Brushes.Orange,
-                    RadiusX = 10,
-                    RadiusY = 10
+                    RadiusX = 20,
+                    RadiusY = 20
                 };
 
                 if (boss != null)
