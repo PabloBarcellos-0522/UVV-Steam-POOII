@@ -572,17 +572,18 @@ namespace Space_battle_shooter_WPF_MOO_ICT
 
                     Rectangle newLaser = new Rectangle
                     {
-                        Tag = "Lasers",
+                        Tag = "laser", 
                         Height = 25,
                         Width = 50,
                         Fill = Brushes.White,
                         Stroke = Brushes.Red
-
                     };
-                    Canvas.SetLeft(newLaser, Canvas.GetLeft(boss) + boss.Width / 2);
-                    Canvas.SetTop(newLaser, Canvas.GetTop(boss) - newLaser.Height);
+
+                    Canvas.SetLeft(newLaser, Canvas.GetLeft(boss) + boss.Width / 2 - newLaser.Width / 2);
+                    Canvas.SetTop(newLaser, Canvas.GetTop(boss) + boss.Height - 10); // aparece na "boca" do boss
 
                     MyCanvas.Children.Add(newLaser);
+
 
                     break;
                 case 2:
