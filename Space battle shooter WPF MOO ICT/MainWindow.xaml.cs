@@ -22,6 +22,7 @@ namespace Space_battle_shooter_WPF_MOO_ICT
 
         Random rand = new Random();
 
+        Rect bossHitBox;
         private List<string> shipImage;        
         int enemySpriteCounter = 0;
         double enemySpawnCoolDown = 3.3;
@@ -206,7 +207,29 @@ namespace Space_battle_shooter_WPF_MOO_ICT
 
 
                             }
+                            
+                            
                         }
+
+
+                    }
+                    if (boss != null)
+                    {
+                        bossHitBox = new Rect(Canvas.GetLeft(boss), Canvas.GetTop(boss), boss.Width, boss.Height);
+                        string playerUriString = "";
+                        if (player.Fill is ImageBrush playerBrush && playerBrush.ImageSource is BitmapImage playerBitmap)
+                        {
+                            playerUriString = playerBitmap.UriSource.ToString();
+
+                        }
+                    }
+
+
+                    if (bulletHitBox.IntersectsWith(bossHitBox))
+                    {
+
+                        itemRemover.Add(x);
+                        score += 1;
                     }
 
                 }
@@ -273,7 +296,7 @@ namespace Space_battle_shooter_WPF_MOO_ICT
 
             }
 
-            if (score >= 70 && !bossActive)
+            if (score >= 1 && !bossActive)
             {
                 bossActive = true;
                 damage = 0;
@@ -289,7 +312,7 @@ namespace Space_battle_shooter_WPF_MOO_ICT
                     {
                         ImageBrush bossImg = new ImageBrush();
                         bossImg.ImageSource = new BitmapImage(new Uri("pack://application:,,,/images/Abrantes.png"));
-
+                        
                         boss = new Rectangle
                         {
                             Tag = "boss",
@@ -298,9 +321,11 @@ namespace Space_battle_shooter_WPF_MOO_ICT
                             Fill = bossImg
                         };
 
+
                         Canvas.SetTop(boss, -300);
                         Canvas.SetLeft(boss, (MyCanvas.ActualWidth - boss.Width) / 2);
                         MyCanvas.Children.Add(boss);
+                        bossHitBox = new Rect(Canvas.GetLeft(boss), Canvas.GetTop(boss),boss.Width, boss.Height);
                     }
 
                 }
@@ -308,7 +333,7 @@ namespace Space_battle_shooter_WPF_MOO_ICT
                 {
                     Canvas.SetTop(boss, Canvas.GetTop(boss) + (30 * delta));
                 }
-
+                
 
             }
         }
