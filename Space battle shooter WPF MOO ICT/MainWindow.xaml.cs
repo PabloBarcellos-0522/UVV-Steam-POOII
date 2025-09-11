@@ -462,5 +462,27 @@ namespace Space_battle_shooter_WPF_MOO_ICT
             MyCanvas.Children.Add(newEnemy);
 
         }
+    
+        public void AtaquesBoss(int ataque)
+        {
+            
+            switch ( ataque) {
+                case 0:
+                    //Ataque de ballas pela boca
+                    break;
+                case 1:
+                    //Ataque de Lasers pela boca
+                    break;
+                case 2:
+                    //Ataque Avanço letal
+                    break;
+
+
+
+                    //
+            }
+    
     }
+
+
 }
