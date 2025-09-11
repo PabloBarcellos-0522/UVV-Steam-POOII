@@ -34,7 +34,7 @@ namespace Space_battle_shooter_WPF_MOO_ICT
         Rectangle? boss = null;
         Boolean bossActive = false;
         int bossTime = 0;
-        int bossLife = 300;
+        int bossLife = 250;
         int cooldownBossAttacks = 0;
         int bossSpeed = 100;
         bool avanco = false;
@@ -136,7 +136,20 @@ namespace Space_battle_shooter_WPF_MOO_ICT
             double delta = (args.RenderingTime - lastRenderTime).TotalSeconds;
             lastRenderTime = args.RenderingTime;
 
-            bgTransform.Y += 150 * delta;
+            if (boss == null)
+            {
+                bgTransform.Y += 150 * delta;
+            }
+            else if (boss != null && bossActive && bossTime > 1500)
+            {
+                bossDanger.Content = "";
+                bgTransform.Y -= 150 * delta;
+            }
+            else
+            {
+                bossDanger.Content = "Pset Danger";
+            }
+
 
             playerHitBox = new Rect(Canvas.GetLeft(player), Canvas.GetTop(player), player.Width, player.Height);
 
@@ -242,6 +255,10 @@ namespace Space_battle_shooter_WPF_MOO_ICT
                         if ((string)scoreText.Content == "Life: 0")
                         {
                             itemRemover.Add(boss);
+                            MessageBox.Show("Captain You have destroyed " + score + " Alien Ships and death the Boss Abrantes MECA!" + Environment.NewLine + "Press Ok to Play Again", "MOO Says: ");
+
+                            System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
+                            this.Close();
                         }
                         else
                         {
@@ -320,7 +337,7 @@ namespace Space_battle_shooter_WPF_MOO_ICT
 
                 if (x is Rectangle && (string)x.Tag == "bossBullet")
                 {
-                    Canvas.SetTop(x, Canvas.GetTop(x) + (300 * delta));
+                    Canvas.SetTop(x, Canvas.GetTop(x) + (150 * delta));
 
                     if (Canvas.GetTop(x) > 750)
                     {
@@ -617,8 +634,8 @@ namespace Space_battle_shooter_WPF_MOO_ICT
 
         private async void Ataque0()
         {
-            int duracaoTotal = 5000; // 5 segundos
-            int intervalo = 500;     // 0.5 segundo
+            int duracaoTotal = 6000; // 5 segundos
+            int intervalo = 1000;     // 0.5 segundo
             int disparos = duracaoTotal / intervalo;
 
             for (int i = 0; i < disparos; i++)
@@ -626,8 +643,8 @@ namespace Space_battle_shooter_WPF_MOO_ICT
                 Rectangle bossBullet = new Rectangle
                 {
                     Tag = "bossBullet",
-                    Height = 30,
-                    Width = 30,
+                    Height = 25,
+                    Width = 25,
                     Fill = Brushes.Yellow,
                     Stroke = Brushes.Orange,
                     RadiusX = 20,

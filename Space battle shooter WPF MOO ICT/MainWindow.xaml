@@ -17,6 +17,7 @@
                 <ImageBrush/>
             </Rectangle.Fill>
         </Rectangle>
+        <Label x:Name="bossDanger" Content="" Canvas.Left="154" Canvas.Top="187" HorizontalAlignment="Left" VerticalAlignment="Top" Width="232" Foreground="Red" FontSize="48" FontFamily="Bernard MT Condensed"/>
 
     </Canvas>
 </Window>
