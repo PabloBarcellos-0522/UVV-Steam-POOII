@@ -25,6 +25,8 @@ namespace Space_battle_shooter_WPF_MOO_ICT
 
         private List<string> shipImage;
 
+        int abrantesDmg = 0;
+        bool bossfight = false;
 
         int alliesCounter = 100;
         int enemySpriteCounter = 0;
@@ -126,10 +128,10 @@ namespace Space_battle_shooter_WPF_MOO_ICT
 
             //Frequencia com que aliados vão aparecer
             alliesCounter -= 1;
-            if (alliesCounter < 0)
+            if (alliesCounter < 0 && (bossfight ==false))
             {
                 MakeAllies(playerShipPath);
-                alliesCounter = rand.Next(300, 600);
+                alliesCounter = rand.Next(200, 500);
 
             }
 
@@ -147,7 +149,7 @@ namespace Space_battle_shooter_WPF_MOO_ICT
             scoreText.Content = "Score: " + score;
             damageText.Content = "Damage " + damage;
 
-            if (enemyCounter < 0)
+            if (enemyCounter < 0 && (bossfight == false))
             {
                 MakeEnemies();
                 enemyCounter = (int)limit;
@@ -178,6 +180,10 @@ namespace Space_battle_shooter_WPF_MOO_ICT
 
                     foreach (var y in MyCanvas.Children.OfType<Rectangle>())
                     {
+                        if (bossfight)
+                        {
+                            itemRemover.Add(y);
+                        }
                         if (y is Rectangle && (string)y.Tag == "enemy")
                         {
                             Rect enemyHit = new Rect(Canvas.GetLeft(y), Canvas.GetTop(y), y.Width, y.Height);
@@ -205,16 +211,29 @@ namespace Space_battle_shooter_WPF_MOO_ICT
 
                     }
 
+                    //Ativa o modo bossfight
+                    if (score > 10)
+                    {
+                        damage = 0;
+                        score = 0;
+                        bossfight = true;
+                    }
+
                 }
 
                 if (x is Rectangle && (string)x.Tag == "enemy")
                 {
                     Canvas.SetTop(x, Canvas.GetTop(x) + enemySpeed);
 
-                    if (Canvas.GetTop(x) > 750)
+                    if (Canvas.GetTop(x) > 750 )
                     {
                         itemRemover.Add(x);
                         damage += 10;
+                    }
+
+                    if (bossfight)
+                    {
+                        itemRemover.Add(x);
                     }
 
                     Rect enemyHitBox = new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width, x.Height);
