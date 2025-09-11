@@ -37,6 +37,8 @@ namespace Space_battle_shooter_WPF_MOO_ICT
         int bossLife = 300;
         int cooldownBossAttacks = 0;
 
+        //Duração dos ataques do boss
+        int bossAttackTimer;
 
         Rect playerHitBox;
 
@@ -229,7 +231,7 @@ namespace Space_battle_shooter_WPF_MOO_ICT
                         }
                     }
 
-
+                    
                     if (bulletHitBox.IntersectsWith(bossHitBox))
                     {
                         itemRemover.Add(x);
@@ -245,8 +247,31 @@ namespace Space_battle_shooter_WPF_MOO_ICT
                     }
 
                 }
+                //Boss laser projectile
+                if (x is Rectangle && (string)x.Tag == "laser")
+                {
+                    Canvas.SetTop(x, Canvas.GetTop(x) + enemySpeed * delta);
+                    
+                    string playerUriString = "";
 
-                if (x is Rectangle && (string)x.Tag == "enemy")
+                    if (Canvas.GetTop(x) > 750)
+                    {
+                        itemRemover.Add(x);
+                        
+                    }
+                    Rect laserHitBox = new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width, x.Height);
+
+                    if (playerHitBox.IntersectsWith(laserHitBox))
+                    {
+
+                        
+                        damage += 1;
+                    }
+
+
+                }
+
+                    if (x is Rectangle && (string)x.Tag == "enemy")
                 {
                     Canvas.SetTop(x, Canvas.GetTop(x) + enemySpeed * delta);
 
@@ -287,6 +312,24 @@ namespace Space_battle_shooter_WPF_MOO_ICT
                         damage += 5;
                     }
 
+                }
+
+                if (x is Rectangle && (string)x.Tag == "bossBullet")
+                {
+                    Canvas.SetTop(x, Canvas.GetTop(x) + (300 * delta));
+
+                    if (Canvas.GetTop(x) > 750)
+                    {
+                        itemRemover.Add(x);
+                    }
+
+                    Rect bossBulletHitBox = new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width, x.Height);
+
+                    if (playerHitBox.IntersectsWith(bossBulletHitBox))
+                    {
+                        itemRemover.Add(x);
+                        damage += 10;
+                    }
                 }
             }
 
@@ -492,9 +535,25 @@ namespace Space_battle_shooter_WPF_MOO_ICT
             {
                 case 0:
                     //Ataque de ballas pela boca
+                    Ataque0();
                     break;
                 case 1:
                     //Ataque de Lasers pela boca
+
+                    Rectangle newLaser = new Rectangle
+                    {
+                        Tag = "Lasers",
+                        Height = 25,
+                        Width = 50,
+                        Fill = Brushes.White,
+                        Stroke = Brushes.Red
+
+                    };
+                    Canvas.SetLeft(newLaser, Canvas.GetLeft(boss) + boss.Width / 2);
+                    Canvas.SetTop(newLaser, Canvas.GetTop(boss) - newLaser.Height);
+
+                    MyCanvas.Children.Add(newLaser);
+
                     break;
                 case 2:
                     //Ataque Avanço letal
@@ -502,5 +561,36 @@ namespace Space_battle_shooter_WPF_MOO_ICT
             }
 
         }
+
+        private async void Ataque0()
+        {
+            int duracaoTotal = 5000; // 5 segundos
+            int intervalo = 500;     // 0.5 segundo
+            int disparos = duracaoTotal / intervalo;
+
+            for (int i = 0; i < disparos; i++)
+            {
+                Rectangle bossBullet = new Rectangle
+                {
+                    Tag = "bossBullet",
+                    Height = 20,
+                    Width = 20,
+                    Fill = Brushes.Yellow,
+                    Stroke = Brushes.Orange,
+                    RadiusX = 10,
+                    RadiusY = 10
+                };
+
+                if (boss != null)
+                {
+                    Canvas.SetLeft(bossBullet, Canvas.GetLeft(boss) + (boss.Width / 2) - (bossBullet.Width / 2));
+                    Canvas.SetTop(bossBullet, Canvas.GetTop(boss) + boss.Height - 40);
+
+                    MyCanvas.Children.Add(bossBullet);
+                }
+                await Task.Delay(intervalo);
+            }
+        }
+
     }
 }
