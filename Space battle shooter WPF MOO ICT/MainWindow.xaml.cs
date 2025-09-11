@@ -180,11 +180,8 @@ namespace Space_battle_shooter_WPF_MOO_ICT
 
                     foreach (var y in MyCanvas.Children.OfType<Rectangle>())
                     {
-                        if (bossfight)
-                        {
-                            itemRemover.Add(y);
-                        }
-                        if (y is Rectangle && (string)y.Tag == "enemy")
+                        
+                        if (y is Rectangle && (string)y.Tag == "enemy"  )
                         {
                             Rect enemyHit = new Rect(Canvas.GetLeft(y), Canvas.GetTop(y), y.Width, y.Height);
 
@@ -212,17 +209,24 @@ namespace Space_battle_shooter_WPF_MOO_ICT
                     }
 
                     //Ativa o modo bossfight
-                    if (score > 10)
+                    if (score >= 1)
                     {
                         damage = 0;
                         score = 0;
                         bossfight = true;
+                        bossfightAbrantes();
                     }
 
                 }
 
                 if (x is Rectangle && (string)x.Tag == "enemy")
                 {
+
+                    if (bossfight && (string)x.Name != "player")
+                    {
+                        itemRemover.Add(x);
+                    }
+
                     Canvas.SetTop(x, Canvas.GetTop(x) + enemySpeed);
 
                     if (Canvas.GetTop(x) > 750 )
@@ -231,10 +235,8 @@ namespace Space_battle_shooter_WPF_MOO_ICT
                         damage += 10;
                     }
 
-                    if (bossfight)
-                    {
-                        itemRemover.Add(x);
-                    }
+                    
+
 
                     Rect enemyHitBox = new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width, x.Height);
 
@@ -253,6 +255,11 @@ namespace Space_battle_shooter_WPF_MOO_ICT
                 if (x is Rectangle && (string)x.Tag == "allie")
                 {
                     Canvas.SetTop(x, Canvas.GetTop(x) + enemySpeed);
+
+                    if (bossfight && (string)x.Name != "player")
+                    {
+                        itemRemover.Add(x);
+                    }
 
                     if (Canvas.GetTop(x) > 750)
                     {
@@ -283,6 +290,7 @@ namespace Space_battle_shooter_WPF_MOO_ICT
             {
                 MyCanvas.Children.Remove(i);
             }
+            
 
             //Verifica dano das naves
             if (damage > 99 && ((playerShipPath == "/images/player.png") || (playerShipPath == "/images/4.png")))
@@ -440,6 +448,21 @@ namespace Space_battle_shooter_WPF_MOO_ICT
             Canvas.SetTop(newAllie, -100);
             Canvas.SetLeft(newAllie, rand.Next(30, 430));
             MyCanvas.Children.Add(newAllie);
+
+        }
+        private void bossfightAbrantes()
+        {
+            ImageBrush AbrantesImg = new ImageBrush();
+
+            AbrantesImg.ImageSource = new BitmapImage(new Uri("pack://application:,,,/images/Abrantes.png" ));
+
+            Rectangle AbrantesRectangle = new Rectangle
+            {
+                Tag = "enemy",
+                Height = 200,
+                Width = 265,
+                Fill = AbrantesImg
+            };
 
         }
     }
