@@ -36,9 +36,12 @@ namespace Space_battle_shooter_WPF_MOO_ICT
         int bossTime = 0;
         int bossLife = 300;
         int cooldownBossAttacks = 0;
+        bool avanco = false;
+        double playerPositionY;
+        double playerPositionX;
 
         //Duração dos ataques do boss
-        int bossAttackTimer;
+        int bossAttackDuration;
 
         Rect playerHitBox;
 
@@ -371,7 +374,34 @@ namespace Space_battle_shooter_WPF_MOO_ICT
                 {
                     Canvas.SetTop(boss, Canvas.GetTop(boss) + (30 * delta));
                 }
+                else if (avanco)
+                {
+                    double bossX = Canvas.GetLeft(boss);
+                    double bossY = Canvas.GetTop(boss);
 
+                    double directionX = Math.Sign(playerPositionX - bossX);
+                    double directionY = Math.Sign(playerPositionY - bossY);
+
+                    double moveSpeed = 150 * delta; // velocidade do avanço
+
+                    // Movimento em X
+                    if (Math.Abs(playerPositionX - bossX) > 5)
+                    {
+                        Canvas.SetLeft(boss, bossX + directionX * moveSpeed);
+                    }
+
+                    // Movimento em Y
+                    if (Math.Abs(playerPositionY - bossY) > 5)
+                    {
+                        Canvas.SetTop(boss, bossY + directionY * moveSpeed);
+                    }
+
+                    // Se chegou perto o suficiente da posição do player
+                    if (Math.Abs(playerPositionX - bossX) <= 5 && Math.Abs(playerPositionY - bossY) <= 5)
+                    {
+                        avanco = false; // Parar avanço
+                    }
+                }
 
             }
 
@@ -538,6 +568,9 @@ namespace Space_battle_shooter_WPF_MOO_ICT
                     break;
                 case 2:
                     //Ataque Avanço letal
+                    avanco = true;
+                    playerPositionY = Canvas.GetTop(player);
+                    playerPositionX = Canvas.GetLeft(player);
                     break;
             }
 
