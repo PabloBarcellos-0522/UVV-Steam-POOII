@@ -35,6 +35,7 @@ namespace Space_battle_shooter_WPF_MOO_ICT
         Boolean bossActive = false;
         int bossTime = 0;
         int bossLife = 300;
+        int cooldownBossAttacks = 0;
 
 
         Rect playerHitBox;
@@ -316,9 +317,9 @@ namespace Space_battle_shooter_WPF_MOO_ICT
 
             if (bossActive)
             {
+                bossTime += 1;
                 if (boss == null)
                 {
-                    bossTime += 1;
                     if (bossTime >= 150)
                     {
                         scoreText.Content = "Life: " + bossLife;
@@ -348,6 +349,15 @@ namespace Space_battle_shooter_WPF_MOO_ICT
 
 
             }
+
+            cooldownBossAttacks += 1;
+            if (cooldownBossAttacks % 1000 == 0 && bossActive && boss != null && Canvas.GetTop(boss) > 14)
+            {
+                cooldownBossAttacks = 0;
+                int attack = rand.Next(0, 3);
+                AtaquesBoss(attack);
+            }
+
         }
 
         private void OnKeyDown(object sender, KeyEventArgs e)
@@ -489,14 +499,8 @@ namespace Space_battle_shooter_WPF_MOO_ICT
                 case 2:
                     //Ataque Avanço letal
                     break;
-
-
-
-                    //
             }
 
         }
-
-
     }
 }
