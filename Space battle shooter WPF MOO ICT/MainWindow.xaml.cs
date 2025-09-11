@@ -36,6 +36,8 @@ namespace Space_battle_shooter_WPF_MOO_ICT
         int bossTime = 0;
         int bossLife = 300;
 
+        //Duração dos ataques do boss
+        int bossAttackTimer;
 
         Rect playerHitBox;
 
@@ -228,7 +230,7 @@ namespace Space_battle_shooter_WPF_MOO_ICT
                         }
                     }
 
-
+                    
                     if (bulletHitBox.IntersectsWith(bossHitBox))
                     {
                         itemRemover.Add(x);
@@ -244,8 +246,31 @@ namespace Space_battle_shooter_WPF_MOO_ICT
                     }
 
                 }
+                //Boss laser projectile
+                if (x is Rectangle && (string)x.Tag == "laser")
+                {
+                    Canvas.SetTop(x, Canvas.GetTop(x) + enemySpeed * delta);
+                    
+                    string playerUriString = "";
 
-                if (x is Rectangle && (string)x.Tag == "enemy")
+                    if (Canvas.GetTop(x) > 750)
+                    {
+                        itemRemover.Add(x);
+                        
+                    }
+                    Rect laserHitBox = new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width, x.Height);
+
+                    if (playerHitBox.IntersectsWith(laserHitBox))
+                    {
+
+                        
+                        damage += 1;
+                    }
+
+
+                }
+
+                    if (x is Rectangle && (string)x.Tag == "enemy")
                 {
                     Canvas.SetTop(x, Canvas.GetTop(x) + enemySpeed * delta);
 
@@ -485,6 +510,21 @@ namespace Space_battle_shooter_WPF_MOO_ICT
                     break;
                 case 1:
                     //Ataque de Lasers pela boca
+
+                    Rectangle newLaser = new Rectangle
+                    {
+                        Tag = "Lasers",
+                        Height = 25,
+                        Width = 50,
+                        Fill = Brushes.White,
+                        Stroke = Brushes.Red
+
+                    };
+                    Canvas.SetLeft(newLaser, Canvas.GetLeft(boss) + boss.Width / 2);
+                    Canvas.SetTop(newLaser, Canvas.GetTop(boss) - newLaser.Height);
+
+                    MyCanvas.Children.Add(newLaser);
+
                     break;
                 case 2:
                     //Ataque Avanço letal
