@@ -23,7 +23,7 @@ namespace Space_battle_shooter_WPF_MOO_ICT
         Random rand = new Random();
 
         Rect bossHitBox;
-        private List<string> shipImage;        
+        private List<string> shipImage;
         int enemySpriteCounter = 0;
         double enemySpawnCoolDown = 3.3;
         int playerSpeed = 350;
@@ -34,6 +34,7 @@ namespace Space_battle_shooter_WPF_MOO_ICT
         Rectangle? boss = null;
         Boolean bossActive = false;
         int bossTime = 0;
+        int bossLife = 300;
 
 
         Rect playerHitBox;
@@ -54,26 +55,26 @@ namespace Space_battle_shooter_WPF_MOO_ICT
                 "/images/4.png",
                 "/images/5.png"
             };
-            
-                
-                if (shipImagePath == "/images/1.png")
-                {
-                     playerSpeed = 400;
-                }
 
-                if (shipImagePath == "/images/2.png")
-                {
-                    playerSpeed = 340;
-                }
-                if (shipImagePath == "/images/3.png")
-                {
-                    playerSpeed = 400;
-                }
-                
-                if (shipImagePath == "/images/5.png")
-                {
-                    playerSpeed = 340;
-                }
+
+            if (shipImagePath == "/images/1.png")
+            {
+                playerSpeed = 400;
+            }
+
+            if (shipImagePath == "/images/2.png")
+            {
+                playerSpeed = 340;
+            }
+            if (shipImagePath == "/images/3.png")
+            {
+                playerSpeed = 400;
+            }
+
+            if (shipImagePath == "/images/5.png")
+            {
+                playerSpeed = 340;
+            }
 
         }
 
@@ -99,7 +100,7 @@ namespace Space_battle_shooter_WPF_MOO_ICT
             bg.Transform = bgTransform;
             MyCanvas.Background = bg;
 
-            
+
             ImageBrush playerImage = new ImageBrush();
             if (playerImageUri != "pack://application:,,,/images/player.png")
             {
@@ -124,7 +125,7 @@ namespace Space_battle_shooter_WPF_MOO_ICT
             }
 
             if (lastRenderTime == args.RenderingTime) return;
-            
+
             double delta = (args.RenderingTime - lastRenderTime).TotalSeconds;
             lastRenderTime = args.RenderingTime;
 
@@ -141,7 +142,10 @@ namespace Space_battle_shooter_WPF_MOO_ICT
 
             enemySpeed += 4.5 * delta;
 
-            scoreText.Content = "Score: " + score;
+            if (!bossActive)
+            {
+                scoreText.Content = "Score: " + score;
+            }
             damageText.Content = "Damage: " + damage;
 
             if (enemySpawnCoolDown < 0 && !bossActive)
@@ -207,8 +211,8 @@ namespace Space_battle_shooter_WPF_MOO_ICT
 
 
                             }
-                            
-                            
+
+
                         }
 
 
@@ -227,9 +231,16 @@ namespace Space_battle_shooter_WPF_MOO_ICT
 
                     if (bulletHitBox.IntersectsWith(bossHitBox))
                     {
-
                         itemRemover.Add(x);
-                        score += 1;
+                        if ((string)scoreText.Content == "Life: 0")
+                        {
+                            itemRemover.Add(boss);
+                        }
+                        else
+                        {
+                            bossLife -= 1;
+                            scoreText.Content = "Life: " + bossLife;
+                        }
                     }
 
                 }
@@ -310,9 +321,10 @@ namespace Space_battle_shooter_WPF_MOO_ICT
                     bossTime += 1;
                     if (bossTime >= 150)
                     {
+                        scoreText.Content = "Life: " + bossLife;
                         ImageBrush bossImg = new ImageBrush();
                         bossImg.ImageSource = new BitmapImage(new Uri("pack://application:,,,/images/Abrantes.png"));
-                        
+
                         boss = new Rectangle
                         {
                             Tag = "boss",
@@ -325,7 +337,7 @@ namespace Space_battle_shooter_WPF_MOO_ICT
                         Canvas.SetTop(boss, -300);
                         Canvas.SetLeft(boss, (MyCanvas.ActualWidth - boss.Width) / 2);
                         MyCanvas.Children.Add(boss);
-                        bossHitBox = new Rect(Canvas.GetLeft(boss), Canvas.GetTop(boss),boss.Width, boss.Height);
+                        bossHitBox = new Rect(Canvas.GetLeft(boss), Canvas.GetTop(boss), boss.Width, boss.Height);
                     }
 
                 }
@@ -333,7 +345,7 @@ namespace Space_battle_shooter_WPF_MOO_ICT
                 {
                     Canvas.SetTop(boss, Canvas.GetTop(boss) + (30 * delta));
                 }
-                
+
 
             }
         }
@@ -381,7 +393,7 @@ namespace Space_battle_shooter_WPF_MOO_ICT
                 moveRight = false;
             }
 
-            
+
         }
 
         private void Window_Closed(object sender, EventArgs e)
@@ -462,11 +474,12 @@ namespace Space_battle_shooter_WPF_MOO_ICT
             MyCanvas.Children.Add(newEnemy);
 
         }
-    
+
         public void AtaquesBoss(int ataque)
         {
-            
-            switch ( ataque) {
+
+            switch (ataque)
+            {
                 case 0:
                     //Ataque de ballas pela boca
                     break;
@@ -481,8 +494,9 @@ namespace Space_battle_shooter_WPF_MOO_ICT
 
                     //
             }
-    
+
+        }
+
+
     }
-
-
 }
