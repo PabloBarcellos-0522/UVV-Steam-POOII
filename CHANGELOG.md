@@ -13,6 +13,13 @@ implementadas nos jogos do projeto.
 
 ## 🏎️ Jogo de Corrida
 
+<h4 align="center">Antes e depois</h4>
+
+<div align="center" style="display: flex; justify-content: space-around">
+ <img style="width: 500px" src="./Main Resources/Car_Before.png" />
+ <img style="width: 500px" src="./Main Resources/Car_After.png" />
+</div>
+
 ### Novos Recursos
 ### Novos Recursos
 - **`✅ ADICIONADO`** **Mecânica "Near Miss(quase acidente)":**
@@ -119,6 +126,13 @@ implementadas nos jogos do projeto.
 <br>
 
 ## 👽 Jogo Tiros espaciais
+
+<h4 align="center">Antes e depois</h4>
+
+<div align="center" style="display: flex; justify-content: space-around">
+ <img style="width: 500px" src="./Main Resources/Space_Before.png" />
+ <img style="width: 500px" src="./Main Resources/Space_After.png" />
+</div>
 
 ### Novos Recursos
 - **`✅ ADICIONADO`** **Menu Animado:**
