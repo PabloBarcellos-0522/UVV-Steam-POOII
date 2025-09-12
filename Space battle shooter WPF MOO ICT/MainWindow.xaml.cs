@@ -594,7 +594,7 @@ namespace Space_battle_shooter_WPF_MOO_ICT
 
         }
 
-        public void AtaquesBoss(int ataque)
+        public async void AtaquesBoss(int ataque)
         {
 
             switch (ataque)
@@ -605,6 +605,12 @@ namespace Space_battle_shooter_WPF_MOO_ICT
                     break;
                 case 1:
                     //Ataque de Lasers pela boca
+
+                    ImageBrush bossImg = new ImageBrush();
+                    ImageBrush bossImgShoting = new ImageBrush();
+
+                    bossImg.ImageSource = new BitmapImage(new Uri("pack://application:,,,/images/Abrantes.png"));
+                    bossImgShoting.ImageSource = new BitmapImage(new Uri("pack://application:,,,/images/Abrantes-Shoting.png"));
 
                     Rectangle newLaser = new Rectangle
                     {
@@ -619,7 +625,10 @@ namespace Space_battle_shooter_WPF_MOO_ICT
                     Canvas.SetTop(newLaser, Canvas.GetTop(boss) + boss.Height - 10); // aparece na "boca" do boss
 
                     MyCanvas.Children.Add(newLaser);
+                    boss.Fill = bossImgShoting;
 
+                    await Task.Delay(200);
+                    boss.Fill = bossImg;
 
                     break;
                 case 2:
