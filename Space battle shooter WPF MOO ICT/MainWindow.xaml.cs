@@ -40,7 +40,9 @@ namespace Space_battle_shooter_WPF_MOO_ICT
         bool avanco = false;
         double playerPositionY;
         double playerPositionX;
-
+        double initialBossX;
+        double initialBossY;
+        
         //Duração dos ataques do boss
         int bossAttackDuration;
 
@@ -410,8 +412,16 @@ namespace Space_battle_shooter_WPF_MOO_ICT
                 {
                     Canvas.SetTop(boss, Canvas.GetTop(boss) + (30 * delta));
                 }
-                else if (avanco)
+
+                // Variável para controlar se o reposicionamento já ocorreu
+                bool repositioned = false;
+
+                if (avanco)
                 {
+                    // Guarda a posição inicial do Y e X do boss quando o avanço é ativado
+                    double initialBossY = Canvas.GetTop(boss);  // Posição inicial Y
+                    double initialBossX = Canvas.GetLeft(boss); // Posição inicial X
+
                     double bossX = Canvas.GetLeft(boss);
                     double bossY = Canvas.GetTop(boss);
 
@@ -432,29 +442,50 @@ namespace Space_battle_shooter_WPF_MOO_ICT
                         Canvas.SetTop(boss, bossY + directionY * moveSpeed);
                     }
 
-                    // Se chegou perto o suficiente da posição do player
-                    if (Math.Abs(playerPositionX - bossX) <= 5 && Math.Abs(playerPositionY - bossY) <= 5)
+                    // Verifica se o boss chegou perto do player (considerando uma tolerância)
+                    if (Math.Abs(Canvas.GetTop(boss) - playerPositionY) <= 5 && Math.Abs(Canvas.GetLeft(boss) - playerPositionX) <= 5)
                     {
                         avanco = false; // Parar avanço
+                        Canvas.SetTop(boss, initialBossY);  // Restaura a posição Y inicial
+                        Canvas.SetLeft(boss, initialBossX); // Restaura a posição X inicial
+                        playerPositionY = Canvas.GetTop(player);  // Atualiza a posição do player
+                        playerPositionX = Canvas.GetLeft(player); // Atualiza a posição do player
                     }
                 }
 
                 if (boss != null)
                 {
+                    // Se o boss ainda não atingiu a borda inferior, ele continua se movendo
                     if (Canvas.GetTop(boss) > 15)
                     {
                         Canvas.SetLeft(boss, Canvas.GetLeft(boss) - bossSpeed * delta);
                     }
 
-                    if (Canvas.GetLeft(boss) > 0)
+                    // Quando o boss atinge a borda inferior da tela, reposiciona na posição inicial
+                    if (Canvas.GetTop(boss) + boss.Height > MyCanvas.ActualHeight && !repositioned)
+                    {
+                        // Restaura a posição inicial do boss após atingir a borda inferior
+                        Canvas.SetLeft(boss, initialBossX);
+                        Canvas.SetTop(boss, initialBossY);
+                        repositioned = true; // Marca que o reposicionamento foi feito
+                    }
+
+                    // Quando atinge a borda esquerda da tela, muda a direção do movimento
+                    if (Canvas.GetLeft(boss) < 0)
                     {
                         bossSpeed = -bossSpeed;
                     }
-                    if (Canvas.GetLeft(boss) + boss.Width < MyCanvas.ActualWidth)
+
+                    // Quando atinge a borda direita da tela, muda a direção do movimento
+                    if (Canvas.GetLeft(boss) + boss.Width > MyCanvas.ActualWidth)
                     {
                         bossSpeed = -bossSpeed;
                     }
                 }
+
+
+
+
 
 
             }
@@ -463,7 +494,7 @@ namespace Space_battle_shooter_WPF_MOO_ICT
             if (cooldownBossAttacks % 1000 == 0 && bossActive && boss != null && Canvas.GetTop(boss) > 14)
             {
                 cooldownBossAttacks = 0;
-                int attack = rand.Next(0, 3);
+                int attack = rand.Next(2, 3);
                 AtaquesBoss(attack);
             }
 
