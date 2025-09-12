@@ -38,6 +38,7 @@ namespace Space_battle_shooter_WPF_MOO_ICT
         int cooldownBossAttacks = 0;
         int bossSpeed = 100;
         bool avanco = false;
+        bool retornando = false;
         double playerPositionY;
         double playerPositionX;
         double initialBossX;
@@ -154,8 +155,12 @@ namespace Space_battle_shooter_WPF_MOO_ICT
 
 
             playerHitBox = new Rect(Canvas.GetLeft(player), Canvas.GetTop(player), player.Width, player.Height);
+            if (boss != null)
+            {
+                bossHitBox = new Rect(Canvas.GetLeft(boss), Canvas.GetTop(boss), boss.Width, boss.Height);
+            }
 
-            enemySpawnCoolDown -= delta;
+                enemySpawnCoolDown -= delta;
 
             if (limit > 20)
             {
@@ -285,8 +290,6 @@ namespace Space_battle_shooter_WPF_MOO_ICT
 
                     if (playerHitBox.IntersectsWith(laserHitBox))
                     {
-
-                        
                         damage += 1;
                     }
 
@@ -353,6 +356,11 @@ namespace Space_battle_shooter_WPF_MOO_ICT
                         damage += 10;
                     }
                 }
+
+                if (playerHitBox.IntersectsWith(bossHitBox) && bossTime % 15 == 0)
+                {
+                    damage += 1;
+                }
             }
 
             foreach (Rectangle i in itemRemover)
@@ -372,7 +380,7 @@ namespace Space_battle_shooter_WPF_MOO_ICT
 
             }
 
-            if (score >= 1 && !bossActive)
+            if (score >= 70 && !bossActive)
             {
                 bossActive = true;
                 damage = 0;
@@ -409,75 +417,63 @@ namespace Space_battle_shooter_WPF_MOO_ICT
                 else if (Canvas.GetTop(boss) < 15)
                 {
                     Canvas.SetTop(boss, Canvas.GetTop(boss) + (30 * delta));
-                }
-
-                // Variável para controlar se o reposicionamento já ocorreu
-                bool repositioned = false;
-
-                if (avanco)
-                {
-                    // Guarda a posição inicial do Y e X do boss quando o avanço é ativado
-                    double initialBossY = Canvas.GetTop(boss);  // Posição inicial Y
-                    double initialBossX = Canvas.GetLeft(boss); // Posição inicial X
-
-                    double bossX = Canvas.GetLeft(boss);
-                    double bossY = Canvas.GetTop(boss);
-
-                    double directionX = Math.Sign(playerPositionX - bossX);
-                    double directionY = Math.Sign(playerPositionY - bossY);
-
-                    double moveSpeed = 150 * delta; // velocidade do avanço
-
-                    // Movimento em X
-                    if (Math.Abs(playerPositionX - bossX) > 5)
+                    if (Canvas.GetTop(boss) >= 15)
                     {
-                        Canvas.SetLeft(boss, bossX + directionX * moveSpeed);
-                    }
-
-                    // Movimento em Y
-                    if (Math.Abs(playerPositionY - bossY) > 5)
-                    {
-                        Canvas.SetTop(boss, bossY + directionY * moveSpeed);
-                    }
-
-                    // Verifica se o boss chegou perto do player (considerando uma tolerância)
-                    if (Math.Abs(Canvas.GetTop(boss) - playerPositionY) <= 5 && Math.Abs(Canvas.GetLeft(boss) - playerPositionX) <= 5)
-                    {
-                        avanco = false; // Parar avanço
-                        Canvas.SetTop(boss, initialBossY);  // Restaura a posição Y inicial
-                        Canvas.SetLeft(boss, initialBossX); // Restaura a posição X inicial
-                        playerPositionY = Canvas.GetTop(player);  // Atualiza a posição do player
-                        playerPositionX = Canvas.GetLeft(player); // Atualiza a posição do player
+                        Canvas.SetTop(boss, 15);
+                        initialBossX = Canvas.GetLeft(boss);
+                        initialBossY = 15;
                     }
                 }
-
-                if (boss != null)
+                else
                 {
-                    // Se o boss ainda não atingiu a borda inferior, ele continua se movendo
-                    if (Canvas.GetTop(boss) > 15)
+                    if (avanco)
                     {
-                        Canvas.SetLeft(boss, Canvas.GetLeft(boss) - bossSpeed * delta);
-                    }
+                        double bossX = Canvas.GetLeft(boss);
+                        double bossY = Canvas.GetTop(boss);
+                        double distance = Math.Sqrt(Math.Pow(playerPositionX - bossX, 2) + Math.Pow(playerPositionY - bossY, 2));
 
-                    // Quando o boss atinge a borda inferior da tela, reposiciona na posição inicial
-                    if (Canvas.GetTop(boss) + boss.Height > MyCanvas.ActualHeight && !repositioned)
-                    {
-                        // Restaura a posição inicial do boss após atingir a borda inferior
-                        Canvas.SetLeft(boss, initialBossX);
-                        Canvas.SetTop(boss, initialBossY);
-                        repositioned = true; // Marca que o reposicionamento foi feito
+                        if (distance > 10)
+                        {
+                            double directionX = (playerPositionX - bossX) / distance;
+                            double directionY = (playerPositionY - bossY) / distance;
+                            double moveSpeed = 350 * delta; 
+                            Canvas.SetLeft(boss, bossX + directionX * moveSpeed);
+                            Canvas.SetTop(boss, bossY + directionY * moveSpeed);
+                        }
+                        else
+                        {
+                            avanco = false;
+                            retornando = true;
+                        }
                     }
-
-                    // Quando atinge a borda esquerda da tela, muda a direção do movimento
-                    if (Canvas.GetLeft(boss) < 0)
+                    else if (retornando)
                     {
-                        bossSpeed = -bossSpeed;
+                        double currentX = Canvas.GetLeft(boss);
+                        double currentY = Canvas.GetTop(boss);
+                        double returnDistance = Math.Sqrt(Math.Pow(initialBossX - currentX, 2) + Math.Pow(initialBossY - currentY, 2));
+
+                        if (returnDistance > 10)
+                        {
+                            double returnDirX = (initialBossX - currentX) / returnDistance;
+                            double returnDirY = (initialBossY - currentY) / returnDistance;
+                            double returnSpeed = 250 * delta;
+                            Canvas.SetLeft(boss, currentX + returnDirX * returnSpeed);
+                            Canvas.SetTop(boss, currentY + returnDirY * returnSpeed);
+                        }
+                        else
+                        {
+                            Canvas.SetLeft(boss, initialBossX);
+                            Canvas.SetTop(boss, initialBossY);
+                            retornando = false;
+                        }
                     }
-
-                    // Quando atinge a borda direita da tela, muda a direção do movimento
-                    if (Canvas.GetLeft(boss) + boss.Width > MyCanvas.ActualWidth)
+                    else
                     {
-                        bossSpeed = -bossSpeed;
+                        Canvas.SetLeft(boss, Canvas.GetLeft(boss) + bossSpeed * delta);
+                        if ((bossSpeed > 0 && Canvas.GetLeft(boss) + boss.Width > MyCanvas.ActualWidth) || (bossSpeed < 0 && Canvas.GetLeft(boss) < 0))
+                        {
+                            bossSpeed = -bossSpeed; 
+                        }
                     }
                 }
 
@@ -492,7 +488,7 @@ namespace Space_battle_shooter_WPF_MOO_ICT
             if (cooldownBossAttacks % 1000 == 0 && bossActive && boss != null && Canvas.GetTop(boss) > 14)
             {
                 cooldownBossAttacks = 0;
-                int attack = rand.Next(2, 3);
+                int attack = rand.Next(0, 3);
                 AtaquesBoss(attack);
             }
 
