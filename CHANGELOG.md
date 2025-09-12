@@ -25,8 +25,6 @@ implementadas nos jogos do projeto.
  - **Descrição:** Tela inicial com imagem e botão de inicio personalizado.
  - **Data de Conclusão: 07/09/25** 
 
-
-
 <br>
 
 - **` ✅ ADICIONADO`** **Incremento no sistema de Pontuação:**
@@ -34,8 +32,6 @@ implementadas nos jogos do projeto.
  - **Data de Conclusão: 07/09/25** 
 
 <br>
-
-
 
 - **` ✅ ADICIONADO`** **Novo power up: Slow Time :**
  - **Descrição:** Novo power up com modificação de mapa própria. Permite que o player, ao coletar um "floco de neve",pressione "espaço" para diminuir a velocidade dos carros. Pode ser ativado várias vezes até o fim do poder.
@@ -134,5 +130,35 @@ implementadas nos jogos do projeto.
 - **`✅ ADICIONADO`** **Escolha de naves pelo menu:**
  - **Descrição:** Agora o player pode selecionar sua nave inicial diretamente pelo menu do jogo
  - **Data de Conclusão:** 08/09/2025 
+
+<br>
+
+- **`✅ ADICIONADO`** **Aliados ao campo:**
+ - **Descrição:** Naves aliadas aparecem junto ao inimigos, não atirar nelas de dá uma pontuação extra
+ - **Data de Conclusão:** 10/09/2025 
+
+<br>
+
+- **`✅ ADICIONADO`** **Ceu estrelado:**
+ - **Descrição:** Fundo estrelado com movimento para melhorar a impressão de movimento da nave
+ - **Data de Conclusão:** 10/09/2025 
+
+<br>
+
+- **`✅ ADICIONADO`** **Boss Abrantes MECA:**
+ - **Descrição:** Boss implementado com o rosto do iconico professor Abrantes, mestre dos Psets e sua arte computacional
+ - **Data de Conclusão:** 11/09/2025 
+
+<br>
+
+- **`✅ ADICIONADO`** **Ataques implementados:**
+ - **Descrição:** O Boss final tem 3 ataques principais implementados, eles são bolas de energia, lazers e cabeçada (já que ele é uma cabeça)
+ - **Data de Conclusão:** 11/09/2025 
+
+<br>
+
+- **`✅ ADICIONADO`** **Boca Animada:**
+ - **Descrição:** Boss final com animação de ataque ( Ele abre a sua grande boca )
+ - **Data de Conclusão:** 11/09/2025 
 
 <br>
