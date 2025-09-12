@@ -638,8 +638,15 @@ namespace Space_battle_shooter_WPF_MOO_ICT
             int intervalo = 1000;     // 0.5 segundo
             int disparos = duracaoTotal / intervalo;
 
+            ImageBrush bossImg = new ImageBrush();
+            ImageBrush bossImgShoting = new ImageBrush();
+
+            bossImg.ImageSource = new BitmapImage(new Uri("pack://application:,,,/images/Abrantes.png"));
+            bossImgShoting.ImageSource = new BitmapImage(new Uri("pack://application:,,,/images/Abrantes-Shoting.png"));
+
             for (int i = 0; i < disparos; i++)
             {
+                boss.Fill = bossImgShoting;
                 Rectangle bossBullet = new Rectangle
                 {
                     Tag = "bossBullet",
@@ -658,7 +665,10 @@ namespace Space_battle_shooter_WPF_MOO_ICT
 
                     MyCanvas.Children.Add(bossBullet);
                 }
-                await Task.Delay(intervalo);
+
+                await Task.Delay(200);
+                boss.Fill = bossImg;
+                await Task.Delay(intervalo - 200);
             }
         }
 
