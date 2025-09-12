@@ -252,18 +252,17 @@ namespace Space_battle_shooter_WPF_MOO_ICT
                     if (bulletHitBox.IntersectsWith(bossHitBox))
                     {
                         itemRemover.Add(x);
-                        if ((string)scoreText.Content == "Life: 0")
-                        {
-                            itemRemover.Add(boss);
-                            MessageBox.Show("Captain You have destroyed " + score + " Alien Ships and death the Boss Abrantes MECA!" + Environment.NewLine + "Press Ok to Play Again", "MOO Says: ");
+                        bossLife -= 1;
+                        scoreText.Content = "Life: " + Math.Max(0, bossLife);
 
-                            System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
-                            this.Close();
-                        }
-                        else
+                        if (bossLife <= 0)
                         {
-                            bossLife -= 1;
-                            scoreText.Content = "Life: " + bossLife;
+                            if (boss != null) itemRemover.Add(boss);
+                            CompositionTarget.Rendering -= GameLoop;
+
+                            MessageBox.Show("Captain You have destroyed " + score + " Alien Ships and death the Boss Abrantes!" + Environment.NewLine + "Press Ok to Play Again", "MOO Says: ");
+
+                            this.Close();
                         }
                     }
 
@@ -367,7 +366,6 @@ namespace Space_battle_shooter_WPF_MOO_ICT
                 damageText.Foreground = Brushes.Red;
                 MessageBox.Show("Captain You have destroyed " + score + " Alien Ships" + Environment.NewLine + "Press Ok to Play Again", "MOO Says: ");
 
-                System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
                 this.Close();
 
             }
