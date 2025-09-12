@@ -102,7 +102,7 @@ namespace Space_battle_shooter_WPF_MOO_ICT
 
             BitmapImage bgImg = new BitmapImage();
             bgImg.BeginInit();
-            bgImg.UriSource = new Uri("pack://application:,,,/images/starsBG.png");
+            bgImg.UriSource = new Uri("pack://application:,,,/images/Night-sky.png");
             bgImg.CacheOption = BitmapCacheOption.OnLoad;
             bgImg.EndInit();
             bg.ImageSource = bgImg;
