@@ -32,7 +32,7 @@ Projeto de Aprimoramento de Jogos em C# - POO II
 
  1.  **Space battle shooter WPF MOO ICT - 16:** Jogo de nave espacial (shoot 'em up) com novas mecânicas de
  tiro, inimigos, customização e um incível Boss final.
- 2.  **Car Racing Game WPF MOO ICT - 17:** Jogo de corrida 2D com novas mecânicas de power-ups e bovo estilo de pontuação.
+ 2.  **Car Racing Game WPF MOO ICT - 17:** Jogo de corrida 2D com novas mecânicas de power-ups e novo estilo de pontuação.
  3.  **Simple Pong game - 22:** O clássico Pong, agora com IA inteligente, efitos visuais e modo multiplayer adicionado.
 
 
